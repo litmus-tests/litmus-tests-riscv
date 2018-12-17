@@ -1,0 +1,8 @@
+# diy7 -arch RISCV -safe Pod**,RfeXX,FreXX,WseXX -size 4 -num false -ua 0 -variant ConstsInInit
+# Version 7.51+4(dev), Revision: 2695514c9bff71cb93d2b16ec542fbd8fee5a54a
+R+poxxs.litmus
+MP+poxxs.litmus
+2+2W+poxxs.litmus
+S+poxxs.litmus
+SB+poxxs.litmus
+LB+poxxs.litmus

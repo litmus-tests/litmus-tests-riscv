@@ -1,0 +1,5 @@
+# diy7 -arch RISCV -safe Fre,Rfe,Wse,X,Hat -relax [Rmw,Fence.tsodWR] -size 6 -nprocs 2 -num false -ins 3 -unrollatomic 0 -variant ConstsInInit
+# Version 7.51+4(dev), Revision: 2695514c9bff71cb93d2b16ec542fbd8fee5a54a
+RR+RR+rmw-fence.tsos.litmus
+RR+RR+rmw-fence.tso+rmw-fence.tsopx.litmus
+RR+RR+rmw-fence.tsopxs.litmus

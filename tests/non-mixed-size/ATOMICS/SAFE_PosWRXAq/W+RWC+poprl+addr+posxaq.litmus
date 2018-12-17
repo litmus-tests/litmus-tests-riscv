@@ -1,0 +1,21 @@
+RISCV W+RWC+poprl+addr+posxaq
+"PodWWPRl RfeRlP DpAddrdR FrePX PosWRXAq FreAqP"
+Cycle=DpAddrdR FrePX PosWRXAq FreAqP PodWWPRl RfeRlP
+Relax=PosWRXAq
+Safe=Rfe Fre DpAddrdR PodWWPRl
+Generator=diy7 (version 7.51+4(dev))
+Prefetch=0:x=F,0:y=W,1:y=F,1:x=T
+Com=Rf Fr Fr
+Orig=PodWWPRl RfeRlP DpAddrdR FrePX PosWRXAq FreAqP
+{
+0:x5=2; 0:x6=x; 0:x7=1; 0:x8=y;
+1:x6=y; 1:x9=x;
+2:x5=x; 2:x6=1;
+}
+ P0             | P1            | P2               ;
+ sw x5,0(x6)    | lw x5,0(x6)   | lr.w x7,0(x5)    ;
+ sw.rl x7,0(x8) | xor x7,x5,x5  | sc.w x8,x6,0(x5) ;
+                | add x10,x9,x7 | lw.aq x9,0(x5)   ;
+                | lw x8,0(x10)  |                  ;
+exists
+(x=2 /\ 1:x5=1 /\ 1:x8=0 /\ 2:x8=0 /\ 2:x7=0 /\ 2:x9=1)

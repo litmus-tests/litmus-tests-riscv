@@ -1,0 +1,9 @@
+HAND/@all
+ATOMICS/@all
+CO/@all
+SAFE/@all
+RELAX/@all
+AMO_X0_2_THREAD/@all
+BASIC_2_THREAD/@all
+RelAcq_2_THREAD/@all
+FENCE.TSO/@all

@@ -1,0 +1,19 @@
+RISCV CoWW+fence.rw.rwsxx
+"Fence.rw.rwsWWXX WseXX"
+Cycle=WseXX Fence.rw.rwsWWXX
+Relax=WseXX
+Safe=Fence.rw.rwsWW
+Generator=diy7 (version 7.51+4(dev))
+Prefetch=
+Com=Ws
+Orig=Fence.rw.rwsWWXX WseXX
+{
+0:x5=x; 0:x6=1; 0:x9=2;
+}
+ P0                ;
+ lr.w x7,0(x5)     ;
+ sc.w x8,x6,0(x5)  ;
+ fence rw,rw       ;
+ lr.w x10,0(x5)    ;
+ sc.w x11,x9,0(x5) ;
+exists (not (0:x7=0 /\ (0:x10=0 /\ 0:x8=1 /\ (0:x11=0 /\ x=2 \/ 0:x11=1 /\ x=0) \/ 0:x10=1 /\ 0:x8=0 /\ (0:x11=0 /\ x=2 \/ 0:x11=1 /\ x=1))))

@@ -1,0 +1,19 @@
+RISCV 2+2W+fence.rw.rwspx+fence.rw.rwsxp
+"Fence.rw.rwsWWPX WseXX Fence.rw.rwsWWXP Wse"
+Cycle=Wse Fence.rw.rwsWWPX WseXX Fence.rw.rwsWWXP
+Relax=WseXX
+Safe=Wse Fence.rw.rwsWW
+Generator=diy7 (version 7.51+4(dev))
+Prefetch=
+Com=Ws Ws
+Orig=Fence.rw.rwsWWPX WseXX Fence.rw.rwsWWXP Wse
+{
+0:x5=1; 0:x6=x; 0:x7=2;
+1:x5=x; 1:x6=3; 1:x9=4;
+}
+ P0               | P1               ;
+ sw x5,0(x6)      | lr.w x7,0(x5)    ;
+ fence rw,rw      | sc.w x8,x6,0(x5) ;
+ lr.w x8,0(x6)    | fence rw,rw      ;
+ sc.w x9,x7,0(x6) | sw x9,0(x5)      ;
+exists (not (x=4 /\ (0:x8=1 /\ (0:x9=0 /\ (1:x8=1 /\ (1:x7=0 \/ 1:x7=1 \/ 1:x7=2) \/ 1:x8=0 /\ (1:x7=2 \/ 1:x7=0)) \/ 0:x9=1 /\ (1:x7=0 /\ (1:x8=1 \/ 1:x8=0) \/ 1:x7=1 /\ (1:x8=0 \/ 1:x8=1))) \/ 0:x9=1 /\ (0:x8=4 /\ (1:x7=0 /\ (1:x8=1 \/ 1:x8=0) \/ 1:x7=1 /\ (1:x8=0 \/ 1:x8=1)) \/ 0:x8=3 /\ 1:x7=1 /\ 1:x8=0) \/ 0:x8=3 /\ 0:x9=0 /\ 1:x7=1 /\ 1:x8=0) \/ 0:x9=0 /\ x=2 /\ (0:x8=4 /\ (1:x7=0 /\ (1:x8=1 \/ 1:x8=0) \/ 1:x7=1 /\ (1:x8=0 \/ 1:x8=1)) \/ 0:x8=1 /\ 1:x7=0 /\ (1:x8=0 \/ 1:x8=1)) \/ 0:x8=1 /\ 0:x9=1 /\ 1:x7=0 /\ x=1 /\ (1:x8=0 \/ 1:x8=1)))

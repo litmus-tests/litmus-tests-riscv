@@ -1,0 +1,15 @@
+RISCV LR-SC-mixed1
+"the footprint of the lr determines the size of reservation (and it is
+not reduced to the part overlapping with the sc)"
+{
+uint64_t x=0;
+0:x6=x;
+1:x6=x;
+}
+ P0                                    | P1                                    ;
+ lr.d x5,0(x6)    (* R x[0,1]=[0,0] *) | lr.d x5,0(x6)    (* R x[0,1]=[0,0] *) ;
+ ori x7,x0,1                           | ori x7,x0,1                           ;
+ sc.w x8,x7,0(x6) (* W x[0]  = 1    *) | addi x9,x6,4                          ;
+                                       | sc.w x8,x7,0(x9) (* W x[1]  =   1  *) ;
+~exists
+(x=0x100000001 /\ 0:x5=0 /\ 0:x8=0 /\ 1:x5=0 /\ 1:x8=0)

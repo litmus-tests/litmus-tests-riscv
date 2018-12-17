@@ -1,0 +1,19 @@
+RISCV MP+fence.rw.rws+fence.rw.rwsxp
+"Fence.rw.rwsWW RfePX Fence.rw.rwsRRXP Fre"
+Cycle=Fre Fence.rw.rwsWW RfePX Fence.rw.rwsRRXP
+Relax=RfePX
+Safe=Fre Fence.rw.rwsWW Fence.rw.rwsRR
+Generator=diy7 (version 7.51+4(dev))
+Prefetch=
+Com=Rf Fr
+Orig=Fence.rw.rwsWW RfePX Fence.rw.rwsRRXP Fre
+{
+0:x5=1; 0:x6=x; 0:x7=2;
+1:x5=x;
+}
+ P0          | P1               ;
+ sw x5,0(x6) | lr.w x6,0(x5)    ;
+ fence rw,rw | sc.w x7,x6,0(x5) ;
+ sw x7,0(x6) | fence rw,rw      ;
+             | lw x8,0(x5)      ;
+exists (not (x=2 /\ (1:x6=0 /\ (1:x7=0 /\ (1:x8=2 \/ 1:x8=1 \/ 1:x8=0) \/ 1:x7=1 /\ (1:x8=0 \/ 1:x8=1 \/ 1:x8=2)) \/ 1:x6=1 /\ (1:x7=0 /\ (1:x8=1 \/ 1:x8=2) \/ 1:x7=1 /\ (1:x8=2 \/ 1:x8=1)) \/ 1:x6=2 /\ 1:x8=2 /\ (1:x7=1 \/ 1:x7=0))))

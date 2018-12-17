@@ -1,0 +1,7 @@
+non-mixed-size/BASIC_2_THREAD/MP.litmus
+non-mixed-size/SAFE/MP+fence.rw.rws.litmus
+non-mixed-size/SAFE/LB+addrs.litmus
+non-mixed-size/CO/CoWW.litmus
+non-mixed-size/CO/CoRR.litmus
+non-mixed-size/CO/CoWR0.litmus
+non-mixed-size/CO/CoRW1.litmus

@@ -1,0 +1,17 @@
+RISCV CoRW1+posxp
+"PosRWXP RfePX"
+Cycle=RfePX PosRWXP
+Relax=RfePX
+Safe=PosRW
+Generator=diy7 (version 7.51+4(dev))
+Prefetch=
+Com=Rf
+Orig=PosRWXP RfePX
+{
+0:x5=x; 0:x8=1;
+}
+ P0               ;
+ lr.w x6,0(x5)    ;
+ sc.w x7,x6,0(x5) ;
+ sw x8,0(x5)      ;
+exists (not (0:x6=0 /\ x=1 /\ (0:x7=0 \/ 0:x7=1)))

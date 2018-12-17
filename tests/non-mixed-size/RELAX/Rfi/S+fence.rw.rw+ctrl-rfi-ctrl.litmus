@@ -1,0 +1,24 @@
+RISCV S+fence.rw.rw+ctrl-rfi-ctrl
+"Fence.rw.rwdWW Rfe DpCtrldW Rfi DpCtrldW Wse"
+Cycle=Rfi DpCtrldW Wse Fence.rw.rwdWW Rfe DpCtrldW
+Relax=Rfi
+Safe=Rfe Wse Fence.rw.rwdWW DpCtrldW
+Generator=diy7 (version 7.51+4(dev))
+Prefetch=0:x=F,0:y=W,1:y=F,1:x=W
+Com=Rf Ws
+Orig=Fence.rw.rwdWW Rfe DpCtrldW Rfi DpCtrldW Wse
+{
+0:x5=2; 0:x6=x; 0:x7=1; 0:x8=y;
+1:x6=y; 1:x7=1; 1:x8=z; 1:x10=x;
+}
+ P0          | P1             ;
+ sw x5,0(x6) | lw x5,0(x6)    ;
+ fence rw,rw | bne x5,x0,LC00 ;
+ sw x7,0(x8) | LC00:          ;
+             | sw x7,0(x8)    ;
+             | lw x9,0(x8)    ;
+             | bne x9,x0,LC01 ;
+             | LC01:          ;
+             | sw x7,0(x10)   ;
+exists
+(x=2 /\ 1:x5=1 /\ 1:x9=1)

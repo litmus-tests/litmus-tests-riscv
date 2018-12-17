@@ -1,0 +1,152 @@
+LB+amoadd-data-amoadd.rl+amoadd.aq-data-amoadd.litmus
+LB+amoadd-data-amoadds.litmus
+LB+amoadds.litmus
+LB+data-amoadd-datas.litmus
+LB+data+datapx-dataxp.litmus
+MP+fence.rw.rw+amoswap-rfi-addr.litmus
+MP+fence.rw.rw+ctrl-amoswap-rfi-addr.litmus
+MP+fence.rw.rw+data-amoswap-addr.litmus
+RSW.litmus
+RSW+W.litmus
+SB+poscscs.litmus
+SB+rfi-fence.r.rs.litmus
+SB+fence.w.wprlxs.litmus
+LB+fence.r.rw+addr-po.litmus
+LB+fence.r.rw+data-po.litmus
+MP+fence.w.w+addr-fence.i.litmus
+MP+fence.w.w+addr-rfi.litmus
+MP+fence.w.w+addr-[ws-rf].litmus
+MP+fence.w.w+data-fence.i.litmus
+#MP+fence.w.w+data-rfi.litmus
+MP+fence.w.w+data-[ws-rf].litmus
+MP+fence.w.w+data-wsi-rfi-addr.litmus
+MP+fence.w.w+fri-rfi-ctrlfencei.litmus
+MP+fence.w.w+data-[ws-ws]-rfi-addr.litmus
+S+fence.w.w+data-wsi.litmus
+LB+fri-rfi-datas.litmus
+RStar-W-WStar.litmus
+RStar-WStar+W.litmus
+2+2Swap.litmus
+2+2Swap+Acqs.litmus
+2+2W+Swap-fence.r.w-Ws.litmus
+# generalized out-of-thin-air from Andy Wright's slides (2017.10 memory model workshop)
+Andy22.litmus
+Andy25.litmus
+Andy26.litmus
+#Andy27.litmus #loop inside
+Andy27+FILTER.litmus
+# Some differences herd vs. rmem
+Luc01.litmus
+Luc01+BIS.litmus
+Luc01+Rlx.litmus
+Luc02.litmus
+Luc02+BIS.litmus
+Luc03.litmus
+Luc03+BIS.litmus
+#From ISAISA03.litmus
+ISA01.litmus
+ISA02.litmus
+ISA03+SB01.litmus
+ISA03+SB02.litmus
+ISA03+SIMPLE+BIS.litmus
+ISA03+SIMPLE.litmus
+ISA-Rel-Acq.litmus
+ISA-DEP-ADDR.litmus
+ISA-DEP-CTRL.litmus
+ISA09.litmus
+ISA09+BIS.litmus
+S+fence.w.w+fri-rfi-ctrl+REAL.litmus
+ISA10.litmus
+ISA10+BIS.litmus
+ISA10+TER.litmus
+ISA11.litmus
+ISA11+BIS.litmus
+ISA12.litmus
+ISA13.litmus
+ISA13+BIS.litmus
+ISA14.litmus
+ISA14+NEW.litmus
+ISA14+TER.litmus
+ISA14+BIS.litmus
+ISA15.litmus
+ISA16.litmus
+ISA17.litmus
+ISA18.litmus
+#SUCCESS dependencies
+ISA-DEP-SUCCESS.litmus
+ISA-DEP-SUCCESS-SUCCESS.litmus
+ISA-MP-DEP-SUCCESS.litmus
+ISA-MP-DEP-SUCCESS-SWAP.litmus
+ISA-MP-DEP-SUCCESS-SWAP-SIMPLE.litmus
+ISA-MP-DEP-SUCCESS-SUCCESS.litmus
+ISA-MP-DEP-ADDR-LR-SUCCESS.litmus
+ISA-MP-DEP-ADDR-LR-FAIL.litmus
+ISA-S-DEP-ADDR-SUCCESS.litmus
+ISA-S-DEP-DATA-SUCCESS.litmus
+ISA-LB-DEP-ADDR-SUCCESS.litmus
+ISA-LB-DEP-ADDR2-SUCCESS.litmus
+ISA-LB-DEP-ADDR3-SUCCESS.litmus
+ISA-LB-DEP-DATA-SUCCESS.litmus
+#SUCCESS dependencies and writes
+ISA-2+2W-SUCCESS.litmus
+#Old stuff
+ISA-OLD+BIS.litmus
+ISA-OLD+TER.litmus
+##
+C-Will01-Bad.litmus
+C-Will02.litmus
+C-Will02+HEAD.litmus
+C-Will03.litmus
+##Shaked's test of failling sc yielding address dependencies or not.
+LB+addr+addrpx-poxp+VAR.litmus
+LB+addr+addrpx-poxp+VAR2.litmus
+##Classic ppo
+PPOAA.litmus
+PPOCA.litmus
+PPODA.litmus
+##Various LR-SC
+SC-FAIL.litmus
+SWAP-LR-SC.litmus
+SWAP-LR-SC+FULL.litmus
+MP+Data-XX-Addr.litmus
+##Complex ppo:
+Release-ordering.litmus
+##LR/SC
+LR-SC-NOT-FENCE.litmus
+AMO-FENCE.litmus
+#Direct challenge of some PPO rules (use latex macro names)
+PPOLDSTLD01.litmus
+PPOLDSTLD02.litmus
+###Witness of soem changes
+#add rmw to data, aka "artificial" data dependency.
+R+fence.w.w+posxp-addr.litmus
+#Add "syntactic" dependency from the W of a sc, through success register.
+ISA-MP-DEP-WW-SUCCESS.litmus
+#Systematic test of dependencies from the W of sc instruction.
+ISA-DEP-WR-ADDR.litmus
+ISA-DEP-WW-ADDR.litmus
+ISA-DEP-WW-CTRL.litmus
+ISA-DEP-WW-DATA.litmus
+#Foward from Sc
+ForwardSc.litmus
+ForwardAMO.litmus
+# show that the op-model has to commit/finish fences on speculated branches:
+MP+fence.rw.rw+ctrlfence.w.r.litmus
+SB+fence.rw.rw+ctrlfence.r.r.litmus
+###Rule 3 does (not ?) applies to wsi-rfi
+MP+fence.rw.rw+rmw-wsi-rfi-addr.litmus
+## LR/SC to different locations:
+LR-SC-diff-loc1.litmus
+LR-SC-diff-loc2.litmus
+LR-SC-diff-loc3.litmus
+LR-SC-diff-loc4.litmus
+## test fence.tso
+MP+fence.w.w+fence.tso.litmus
+S+fence.w.w+fence.tso.litmus
+R+fence.w.w+fence.tso.litmus
+2+2W+fence.w.w+fence.tso.litmus
+##
+CoWR.litmus
+RDW.litmus
+####Regression rmem vs. herd
+OpVsHerd01.litmus

@@ -1,0 +1,19 @@
+RISCV LB+mixed2
+"at some point this was allowed by the axiomatic and forbidden by the
+operational (not sure which was is correct)"
+{
+uint32_t y=0;
+0:x6=x; 0:x8=y;
+1:x6=y; 1:x12=x;
+}
+ P0                         | P1                                    ;
+ lw x5,0(x6) (* R x=1    *) | ori x5,x0,17 (* 0x11 *)               ;
+ fence rw,rw                | sh x5,2(x6)     (* W y[1]  =   11  *) ;
+ ori x7,x0,1                | lw x7,0(x6)     (* R y[0,1]=[1,11] *) ;
+ sh x7,0(x8) (* W y[0]=1 *) | lw x8,0(x6)     (* R y[0,1]=[1,11] *) ;
+                            | lh x9,2(x6)     (* R y[1]  =   11  *) ;
+                            | xor x10,x9,x9                         ;
+                            | ori x10,x10,1                         ;
+                            | sw x10,0(x12)   (* W x=1           *) ;
+exists
+(x=2 /\ y=0x110001 /\ 0:x5=1 /\ 1:x7=0x110001 /\ 1:x8=0x110001 /\ 1:x9=0x11)

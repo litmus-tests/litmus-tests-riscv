@@ -1,0 +1,17 @@
+RISCV CoRW2+X
+"RfeXP PosRW WsePX"
+Cycle=PosRW WsePX RfeXP
+Relax=WsePX
+Safe=Rfe PosRW
+Generator=diy7 (version 7.51+4(dev))
+Prefetch=
+Com=Rf Ws
+Orig=RfeXP PosRW WsePX
+{
+0:x5=x; 0:x6=1;
+1:x6=x; 1:x7=2;
+}
+ P0               | P1          ;
+ lr.w x7,0(x5)    | lw x5,0(x6) ;
+ sc.w x8,x6,0(x5) | sw x7,0(x6) ;
+exists (not (1:x5=0 /\ (x=2 /\ (0:x7=0 /\ (0:x8=1 \/ 0:x8=0) \/ 0:x7=2 /\ 0:x8=1) \/ 0:x7=2 /\ 0:x8=0 /\ x=1) \/ 0:x7=0 /\ 0:x8=0 /\ 1:x5=1 /\ x=2))

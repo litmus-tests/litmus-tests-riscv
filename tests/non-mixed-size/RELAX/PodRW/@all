@@ -1,0 +1,16 @@
+# diy7 -arch RISCV -safe FrBack,FrLeave,RfBack,RfLeave,WsBack,WsLeave,Rfe,Fre,Wse,PosRW,PosWW,Fence.r.rwdR*,Fence.r.rwsRR,Fence.rw.rwd**,Fence.rw.rwsRR,Fence.rw.rwsWR,Fence.rw.wd*W,Fence.w.wdWW,DpAddrdR,DpAddrdW,DpAddrsR,DpDatadW,DpCtrlFenceIdW,DpCtrldW,DpCtrlFenceIdR,DpCtrlFenceIsR,PodR*AqP,PosRRAqP,Pod*WPRl -num false -relax PodRW -size 8 -nprocs 2 -variant ConstsInInit
+# Version 7.51+4(dev), Revision: 2695514c9bff71cb93d2b16ec542fbd8fee5a54a
+LB.litmus
+LB+fence.r.rw+po.litmus
+S+fence.w.w+po.litmus
+S+fence.rw.w+po.litmus
+LB+fence.rw.w+po.litmus
+S+fence.rw.rw+po.litmus
+LB+fence.rw.rw+po.litmus
+LB+addr+po.litmus
+LB+data+po.litmus
+LB+ctrl+po.litmus
+LB+ctrlfencei+po.litmus
+S+poprl+po.litmus
+LB+po+poprl.litmus
+LB+po+poaqp.litmus

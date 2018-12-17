@@ -1,0 +1,25 @@
+RISCV RDW
+"Fence.rw.rwdWW Rfe DpAddrdR FrLeave RfBack DpAddrdR Fre"
+(* AKA MP+fence.rw.rw+addr-[fr-rf]-addr *)
+Generator=diyone7 (version 7.51+4(dev))
+Prefetch=0:x=F,0:y=W,1:y=F,1:x=T
+Com=Rf Fr Rf
+Orig=Fence.rw.rwdWW Rfe DpAddrdR FrLeave RfBack DpAddrdR Fre
+{
+uint64_t z; uint64_t y; uint64_t x; uint64_t 1:x13; uint64_t 1:x11; uint64_t 1:x8; uint64_t 1:x5;
+
+0:x5=1; 0:x6=x; 0:x7=y;
+1:x6=y; 1:x9=z; 1:x14=x;
+2:x5=1; 2:x6=z;
+}
+ P0          | P1              | P2          ;
+ sd x5,0(x6) | ld x5,0(x6)     | sd x5,0(x6) ;
+ fence rw,rw | xor x7,x5,x5    |             ;
+ sd x5,0(x7) | add x10,x9,x7   |             ;
+             | ld x8,0(x10)    |             ;
+             | ld x11,0(x9)    |             ;
+             | xor x12,x11,x11 |             ;
+             | add x15,x14,x12 |             ;
+             | ld x13,0(x15)   |             ;
+exists
+(1:x5=1 /\ 1:x8=0 /\ 1:x11=1 /\ 1:x13=0)

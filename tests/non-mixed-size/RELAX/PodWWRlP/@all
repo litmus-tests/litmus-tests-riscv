@@ -1,0 +1,22 @@
+# diy7 -arch RISCV -safe FrBack,FrLeave,RfBack,RfLeave,WsBack,WsLeave,Rfe,Fre,Wse,PosRW,PosWW,Fence.r.rwdR*,Fence.r.rwsRR,Fence.rw.rwd**,Fence.rw.rwsRR,Fence.rw.rwsWR,Fence.rw.wd*W,Fence.w.wdWW,DpAddrdR,DpAddrdW,DpAddrsR,DpDatadW,DpCtrlFenceIdW,DpCtrldW,DpCtrlFenceIdR,DpCtrlFenceIsR,PodR*AqP,PosRRAqP,Pod*WPRl -num false -relax PodWWRlP -size 8 -nprocs 2 -variant ConstsInInit
+# Version 7.51+4(dev), Revision: 2695514c9bff71cb93d2b16ec542fbd8fee5a54a
+MP+porlp+fence.r.rw.litmus
+R+porlp+fence.rw.rw.litmus
+MP+porlp+fence.rw.rw.litmus
+MP+porlp+addr.litmus
+MP+porlp+ctrlfencei.litmus
+MP+porlp+poaqp.litmus
+2+2W+porlps.litmus
+S+porlp+fence.r.rw.litmus
+2+2W+fence.w.w+porlp.litmus
+2+2W+fence.rw.w+porlp.litmus
+S+porlp+fence.rw.w.litmus
+2+2W+fence.rw.rw+porlp.litmus
+S+porlp+fence.rw.rw.litmus
+S+porlp+addr.litmus
+S+porlp+data.litmus
+S+porlp+ctrl.litmus
+S+porlp+ctrlfencei.litmus
+2+2W+poprl+porlp.litmus
+S+porlp+poprl.litmus
+S+porlp+poaqp.litmus

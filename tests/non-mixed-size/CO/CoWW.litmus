@@ -1,0 +1,16 @@
+RISCV CoWW
+"PosWW Wse"
+Cycle=Wse PosWW
+Relax=
+Safe=Wse PosWW
+Generator=diy7 (version 7.51+4(dev))
+Prefetch=
+Com=Ws
+Orig=PosWW Wse
+{
+0:x5=1; 0:x6=x; 0:x7=2;
+}
+ P0          ;
+ sw x5,0(x6) ;
+ sw x7,0(x6) ;
+exists (not (x=2))
