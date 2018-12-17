@@ -12,3 +12,6 @@ for test generation.
 
 The tests are distributed subject to the BSD 2-clause licence in
 LICENCE.
+
+This work has been partly supported by the REMS "Rigorous Engineering
+of Mainstream Systems" EPSRC Programme Grant, EP/K008528/1, 2013-2020.
