@@ -2,7 +2,7 @@ RISCV LB+poaqrls
 "PodRWAqRl RfeRlAq PodRWAqRl RfeRlAq"
 Cycle=PodRWAqRl RfeRlAq PodRWAqRl RfeRlAq
 Relax=
-Safe=PodRW RfeRlAq
+Safe=Rfe PodRWAqRl
 Generator=diy7 (version 7.51+4(dev))
 Prefetch=0:x=F,0:y=W,1:y=F,1:x=W
 Com=Rf Rf
