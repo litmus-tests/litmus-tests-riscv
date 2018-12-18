@@ -1,4 +1,4 @@
-# diy7 -arch RISCV -safe Pod**,Rfe,Wse,Fre,Rfi -relax Aq,Rl,AR -size 4 -nprocs 2 -num false -sufname +NEW -variant ConstsInInit
+# diy7 -arch RISCV -safe Pod**,Rfe,Wse,Fre,Rfi -relax Aq,Rl,AR -size 4 -nprocs 2 -num false -sufname +NEW -variant ConstsInInit -variant AsAmo
 # Version 7.51+4(dev), Revision: 2695514c9bff71cb93d2b16ec542fbd8fee5a54a
 MP+po+poaqaq+NEW.litmus
 MP+po+poaqp+NEW.litmus

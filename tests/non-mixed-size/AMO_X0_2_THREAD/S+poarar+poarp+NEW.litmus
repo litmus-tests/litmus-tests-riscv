@@ -11,8 +11,8 @@ Orig=PodWWARAR RfeARAR PodRWARP WsePAR
 0:x5=2; 0:x6=x; 0:x7=1; 0:x8=y;
 1:x6=y; 1:x7=1; 1:x8=x;
 }
- P0                | P1                ;
- sw.aq.rl x5,0(x6) | lw.aq.rl x5,0(x6) ;
- sw.aq.rl x7,0(x8) | sw x7,0(x8)       ;
+ P0                         | P1                       ;
+ amoswap.w.aq.rl x0,x5,(x6) | amoor.w.aq.rl x5,x0,(x6) ;
+ amoswap.w.aq.rl x0,x7,(x8) | sw x7,0(x8)              ;
 exists
 (x=2 /\ 1:x5=1)

@@ -11,8 +11,8 @@ Orig=PodWR FrePAR PodWRARAR FreARP
 0:x5=1; 0:x6=x; 0:x8=y;
 1:x5=1; 1:x6=y; 1:x8=x;
 }
- P0          | P1                ;
- sw x5,0(x6) | sw.aq.rl x5,0(x6) ;
- lw x7,0(x8) | lw.aq.rl x7,0(x8) ;
+ P0          | P1                         ;
+ sw x5,0(x6) | amoswap.w.aq.rl x0,x5,(x6) ;
+ lw x7,0(x8) | amoor.w.aq.rl x7,x0,(x8)   ;
 exists
 (0:x7=0 /\ 1:x7=0)
