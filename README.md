@@ -70,6 +70,9 @@ Comparing the operational and axiomatic model results
 To see a comparison, using the mcompare tool from the diy tool suite,
 of the operational (left) and axiomatic (right) models, do `make compare-models`.
 
+At present seven tests show up as different between operational and axiomatic models.  These tests involve load-reserve and store-conditional to two different locations.  The herd tool assumes that different locations are on different cache lines, in which case the store-conditional must fail, while the rmem tool does not build in that assumption, so the store-conditional can either fail or succeed. 
+
+
 To see all the details of a specific test do `make show-test TEST=<name>`
 where `<name>` is a litmus test name (e.g. MP).
 
