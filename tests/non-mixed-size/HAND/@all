@@ -8,8 +8,6 @@ MP+fence.rw.rw+ctrl-amoswap-rfi-addr.litmus
 MP+fence.rw.rw+data-amoswap-addr.litmus
 RSW.litmus
 RSW+W.litmus
-# SB+poscscs has lw/sw.aq.rl which is not a valid assembly (yet)
-# SB+poscscs.litmus
 SB+rfi-fence.r.rs.litmus
 SB+fence.w.wprlxs.litmus
 LB+fence.r.rw+addr-po.litmus
