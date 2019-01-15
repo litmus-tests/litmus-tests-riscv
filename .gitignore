@@ -1,2 +1,10 @@
 /model-results/flat
 /model-results/herd
+flat-tests.d
+herd-tests.d
+
+/hw-results
+/hw-tests
+/hw-tests-src
+/gcc-tests
+gcc.excl

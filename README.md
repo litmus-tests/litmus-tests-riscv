@@ -79,10 +79,6 @@ where `<name>` is a litmus test name (e.g. MP).
 Running the tests on hardware
 =============================
 
-**NOTE:** as we do not have RISC-V hardware available, the following
-instructions have not yet been fully tested.  If you need help please contact
-us.
-
 The litmus tool from the diy tool suite can generate a C program that
 runs each of the litmus tests (incorporated into the C program as embedded
 assembly) multiple times in an aggressive test harness, when executed on a target RISC-V machine. The
@@ -97,7 +93,9 @@ run the tests (the target machine), you will need another machine, not
 necessarily RISC-V, on which they are available (the host machine).
 
 The following sections explain how to run the litmus tests in three
-scenarios:
+scenarios: (**NOTE:** we have only tests the instructions in the third
+scenario. If you need help please contact us.)
+
 1. Building and running on the same (RISC-V) machine: the target
 RISC-V machine has the diy tool suite, gcc and make installed.
 
@@ -109,6 +107,14 @@ tool suite installed.
 3. Cross compilation: the target RISC-V machine does not have gcc or
 make installed. Here you will need another machine that does have the
 diy tool suite, make and gcc that can cross-compile for RISC-V.
+
+In each of the scenarios below, for some special RISC-V instructions
+(e.g. "fence.tso"), `make` will check if your gcc supports those
+instructions.  Litmus tests that include unsupported instruction will
+be excluded from the tests.  After running the first `make ...`
+command below, the file gcc.excl will list all the litmus test names
+that are excluded.  The command `grep "#" gcc.excl` will show you
+which instructions were detected as unsupported by gcc.
 
 Building and running on the same (RISC-V) machine
 -------------------------------------------------

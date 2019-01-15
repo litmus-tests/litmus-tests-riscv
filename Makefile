@@ -5,6 +5,8 @@ MSORT ?= msort7
 MSUM ?= msum7
 LITMUS ?= litmus7
 
+GCC ?= gcc
+
 ATFILE ?= tests/non-mixed-size/@all
 
 ######################################################################
@@ -132,9 +134,10 @@ merge-hw-tests:
 hw-tests-src/run.exe: | hw-tests-src
 	$(MAKE) -C $|
 
-hw-tests-src:
+hw-tests-src: gcc.excl
+	rm -rf $@
 	mkdir -p $@
-	$(LITMUS) -mach ./riscv.cfg -avail $(CORES) -o $@ $(ATFILE)
+	$(LITMUS) -mach ./riscv.cfg -avail $(CORES) -excl $< -o $@ $(ATFILE)
 
 ### This will produce 1.2 billion results for a 2-thread test
 # -s values for litmus run.exe
@@ -162,6 +165,57 @@ hw-tests-src/run.sh: | hw-tests-src
 hw-tests-src.tgz: %.tgz: %/run.sh | %
 	tar -caf $@ $*
 
+# Before generating the program that runs all the tests, we try to
+# build the following tests individually. A failure to generate one of
+# those tests implies that GCC does not support it so we will exclude
+# it, and similar instructions, from the final generated program.
+gcc-tests/fence.tso-src: TEST = tests/non-mixed-size/SINGLE_INST/fence.tso.litmus
+gcc-tests/amoswap.w.aq.rl-src: TEST = tests/non-mixed-size/SINGLE_INST/amoswap.w.aq.rl.litmus
+gcc-tests/lr.w.aq.rl-src: TEST = tests/non-mixed-size/SINGLE_INST/lr.w.aq.rl.litmus
+# MP is just to make sure we can build a simple test (with no special instructions)
+gcc-tests/MP-src: TEST = tests/non-mixed-size/BASIC_2_THREAD/MP.litmus
+gcc-tests/%-src:
+	mkdir -p $@
+	$(LITMUS) -mach ./riscv.cfg -avail $(CORES) -o $@ $(TEST)
+gcc-tests/%-src/run.exe: | gcc-tests/%-src
+	$(MAKE) -C $| clean
+	$(MAKE) -C $|
+
+FORCE:
+.PHONY: FORCE
+
+# The first line of gcc.excl is the version of gcc with which the file
+# was generated, if the version changes we force a rebuild of the file
+ifneq "$(wildcard gcc.excl)" ""
+ifneq "\# $(shell $(GCC) --version | head -1)" "$(shell head -1 gcc.excl)"
+gcc.excl: FORCE
+endif
+endif
+gcc.excl: grep-tests = $(MSORT) $(ATFILE) | grep '^[^\#]' | xargs grep -li $(foreach e,$(1),-e "$(e)") | sed -e 's|.*/||' -e 's|\.litmus||'
+gcc.excl:
+	rm -rf gcc-tests $@
+	# First we check if we are able to generate and build the MP test (sanity)
+	$(MAKE) gcc-tests/MP-src || { echo "Error: Something went worng while trying to run litmus"; exit 1; }
+	$(MAKE) gcc-tests/MP-src/run.exe || { echo "Error: Something went worng while trying to build the litmus generated program"; exit 1; }
+	{ echo "# $$($(GCC) --version | head -1)";\
+	  echo "# tests with l{b|h|w|d}.aq[.rl] or s{b|h|w|d}[.aq].rl instruction:";\
+	  $(call grep-tests,l[bhwd]\.aq l[bhwd]\.aq\.rl s[bhwd]\.rl s[bhwd]\.aq\.rl);\
+	} > $@
+	# Check individual instructions
+	$(MAKE) gcc-tests/fence.tso-src/run.exe || {\
+	  echo "# tests with fence.tso instruction:";\
+	  $(call grep-tests,fence\.tso);\
+	} >> $@
+	$(MAKE) gcc-tests/amoswap.w.aq.rl-src/run.exe || {\
+	  echo "# tests with amo*.{w|d}.aq.rl instructions:";\
+	  $(call grep-tests,amo[^[:space:]]*\.[wd]\.aq\.rl);\
+	} >> $@
+	$(MAKE) gcc-tests/lr.w.aq.rl-src/run.exe || {\
+	  echo "# tests with {lr|sc}.{w|d}.aq.rl instruction:";\
+	  $(call grep-tests,lr\.[wd]\.aq\.rl sc\.[wd]\.aq\.rl);\
+	} >> $@
+
 clean-hw-tests:
+	rm -rf gcc-tests gcc.excl
 	rm -rf hw-tests hw-tests-src hw-tests-src.tgz
 .PHONY: clean-hw-tests

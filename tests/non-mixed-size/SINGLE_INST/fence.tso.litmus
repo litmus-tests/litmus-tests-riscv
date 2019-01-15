@@ -1,0 +1,7 @@
+RISCV fence.tso
+"Test the instruction fence.tso"
+{
+}
+ P0        ;
+ fence.tso ;
+forall true

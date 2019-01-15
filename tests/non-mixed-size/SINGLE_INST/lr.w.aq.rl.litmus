@@ -1,0 +1,8 @@
+RISCV lr.w.aq.rl
+"Test the instruction lr.w.aq.rl"
+{
+0:x2=x;
+}
+ P0                  ;
+ lr.w.aq.rl x1,0(x2) ;
+forall (0:x1=0)
