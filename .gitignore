@@ -3,8 +3,9 @@
 flat-tests.d
 herd-tests.d
 
-/hw-results
 /hw-tests
 /hw-tests-src
 /gcc-tests
 gcc.excl
+exclude-instructions
+instructions.excl

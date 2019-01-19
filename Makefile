@@ -117,8 +117,9 @@ run-hw-tests: | hw-tests
 .PHONY: run-hw-tests
 
 # Compare hardware results with the models
-compare-hw-%:
+compare-hw-flat compare-hw-herd: compare-hw-%:
 	$(MCOMPARE) -nohash hw-results/run.log model-results/$*.logs
+.PHONY: compare-hw-flat compare-hw-herd
 
 # Generate and cross-compile the tests, to be run on a different machine
 hw-tests: hw-tests-src/run.exe hw-tests-src/run.sh
@@ -134,30 +135,38 @@ merge-hw-tests:
 hw-tests-src/run.exe: | hw-tests-src
 	$(MAKE) -C $|
 
+ifneq "$(filter run-hw-tests hw-tests,$(MAKECMDGOALS))" ""
 hw-tests-src: gcc.excl
+endif
+hw-tests-src: instructions.excl
 	rm -rf $@
 	mkdir -p $@
-	$(LITMUS) -mach ./riscv.cfg -avail $(CORES) -excl $< -o $@ $(ATFILE)
+	$(LITMUS) -mach ./riscv.cfg -avail $(CORES) $(foreach e,$^,-excl $(e)) -o $@ $(ATFILE)
 
 ### This will produce 1.2 billion results for a 2-thread test
 # -s values for litmus run.exe
 SIZES=50k 500k 10k 100k 5k 1M
 # -st values for litmus run.exe
 STRIDES=1 2 3 4 5 6 7 8 31 133
+count := $(shell echo '$(words $(STRIDES)) * $(words $(SIZES))' | bc)
 # Calculate a value for litmus run.exe -r argument, given a value to
 # the -s argument and the number of cores in the machine, in order to
 # produce 20 million results for a 2-thread test
 r-for-s = $(shell printf 'scale=2; x=40000000 / (%d * $(CORES)) + 0.5; scale=0; if (x > 1) x/1 else 1\n' "`echo '$1' | sed 's/[mM]$$/000000/; s/[kK]$$/000/'`" | bc | sed 's/000000$$/M/; s/000$$/k/')
-logs-count = $(eval _logs-count += 1)$(words $(_logs-count))
 hw-tests-src/run.sh: | hw-tests-src
 	{ echo '#!/bin/sh';\
+	  echo 'echo "Running a quick test"';\
 	  echo './run.exe -st 1 -s 5k -r 20 > run.test.log';\
+	  echo 'c=0';\
 	  $(foreach st,$(STRIDES),\
 	    $(foreach s,$(SIZES),\
-	      echo './run.exe -st $(st) -s $(s) -r $(call r-for-s,$(s)) > run.$(logs-count).log';\
+	      echo 'c=$$(($$c + 1))';\
+	      echo 'echo "Running test $$c out of $(count)"';\
+	      echo './run.exe -st $(st) -s $(s) -r $(call r-for-s,$(s)) > "run.$$c.log"';\
 	    )\
 	  )\
 	  echo 'touch done';\
+	  echo 'echo "Done"';\
 	} > $@
 	chmod a+x $@
 
@@ -185,13 +194,13 @@ FORCE:
 .PHONY: FORCE
 
 # The first line of gcc.excl is the version of gcc with which the file
-# was generated, if the version changes we force a rebuild of the file
+# was generated, if the version changed we force a rebuild of the file
 ifneq "$(wildcard gcc.excl)" ""
 ifneq "\# $(shell $(GCC) --version | head -1)" "$(shell head -1 gcc.excl)"
 gcc.excl: FORCE
 endif
 endif
-gcc.excl: grep-tests = $(MSORT) $(ATFILE) | grep '^[^\#]' | xargs grep -li $(foreach e,$(1),-e "$(e)") | sed -e 's|.*/||' -e 's|\.litmus||'
+gcc.excl: grep-tests = $(if $(1),$(MSORT) $(ATFILE) | grep '^[^\#]' | xargs grep -li $(1) | sed -e 's|.*/||' -e 's|\.litmus||',echo)
 gcc.excl:
 	rm -rf gcc-tests $@
 	# First we check if we are able to generate and build the MP test (sanity)
@@ -199,12 +208,12 @@ gcc.excl:
 	$(MAKE) gcc-tests/MP-src/run.exe || { echo "Error: Something went worng while trying to build the litmus generated program"; exit 1; }
 	{ echo "# $$($(GCC) --version | head -1)";\
 	  echo "# tests with l{b|h|w|d}.aq[.rl] or s{b|h|w|d}[.aq].rl instruction:";\
-	  $(call grep-tests,l[bhwd]\.aq l[bhwd]\.aq\.rl s[bhwd]\.rl s[bhwd]\.aq\.rl);\
+	  $(call grep-tests,-e l[bhwd]\.aq -e l[bhwd]\.aq\.rl -e s[bhwd]\.rl -e s[bhwd]\.aq\.rl);\
 	} > $@
 	# Check individual instructions
 	$(MAKE) gcc-tests/fence.tso-src/run.exe || {\
 	  echo "# tests with fence.tso instruction:";\
-	  $(call grep-tests,fence\.tso);\
+	  $(call grep-tests,-F fence.tso);\
 	} >> $@
 	$(MAKE) gcc-tests/amoswap.w.aq.rl-src/run.exe || {\
 	  echo "# tests with amo*.{w|d}.aq.rl instructions:";\
@@ -212,10 +221,17 @@ gcc.excl:
 	} >> $@
 	$(MAKE) gcc-tests/lr.w.aq.rl-src/run.exe || {\
 	  echo "# tests with {lr|sc}.{w|d}.aq.rl instruction:";\
-	  $(call grep-tests,lr\.[wd]\.aq\.rl sc\.[wd]\.aq\.rl);\
+	  $(call grep-tests,-e lr\.[wd]\.aq\.rl -e sc\.[wd]\.aq\.rl);\
 	} >> $@
 
+exclude-instructions:
+	$(MSORT) $(ATFILE) | grep '^[^#]' | xargs awk '/P0/ {x=1;next;} /[^;]$$/ {x=0;next;} x==1 {print $$0}' | tr '[:upper:]|' '[:lower:]\n' | awk '{print $$1}' | sed '/.*:$$/d; s/;$$//; /^[[:space:]]*$$/d' | sort -u | awk '{print "#",$$0}' > $@
+
+instructions.excl: insts = $(shell grep '^[^#]' excl-instructions)
+instructions.excl: exclude-instructions
+	$(call grep-tests,$(foreach i,$(insts),-F "$(i)")) > $@
+
 clean-hw-tests:
-	rm -rf gcc-tests gcc.excl
+	rm -rf gcc-tests gcc.excl instructions.excl
 	rm -rf hw-tests hw-tests-src hw-tests-src.tgz
 .PHONY: clean-hw-tests

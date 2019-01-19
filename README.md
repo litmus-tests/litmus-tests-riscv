@@ -108,13 +108,35 @@ tool suite installed.
 make installed. Here you will need another machine that does have the
 diy tool suite, make and gcc that can cross-compile for RISC-V.
 
-In each of the scenarios below, for some special RISC-V instructions
-(e.g. "fence.tso"), `make` will check if your gcc supports those
-instructions.  Litmus tests that include unsupported instruction will
-be excluded from the tests.  After running the first `make ...`
-command below, the file gcc.excl will list all the litmus test names
-that are excluded.  The command `grep "#" gcc.excl` will show you
-which instructions were detected as unsupported by gcc.
+In the first and third scenarios, for some RISC-V instructions (e.g.
+amoswap.w.aq.rl), `make` will check if your gcc supports those
+instructions.  Litmus tests that include unsupported instructions will
+be excluded from the tests.  After running `make run-hw-tests ...`
+or `make hw-tests ...` as described below, the file gcc.excl will list
+all the litmus test names that were excluded because gcc does not
+support them.  The command `grep "#" gcc.excl` will show you which
+instructions were detected as unsupported by gcc.
+
+In addition, if you are following the second scenario, or the target
+RISC-V machine does not support some instructions (even though gcc
+does), you can list instructions you want to exclude in the file
+exclude-instructions (one instruction in each line, lines starting
+with # are ignored). The command `make exclude-instructions` will
+generate the file, if it does not already exists, with all the
+instructions used by the litmus tests (commented out). After running
+the first `make ...` command below, the file instructions.excl will
+list all the litmus test names that were excluded because they
+included instructions from exclude-instructions.
+
+Note that running the tests can take a few days and even weeks.  The
+tests run in a few batches.  Each batch includes the complete set of
+tests, but with different harness parameters which increase the chance
+of observing the full range of behaviours.  The first batch is
+relatively quick (few minutes).  The results from this batch will be
+saved in the file run.test.log.  The following batches will take
+longer time to complete (a few hours each one). The results from each
+of those batches will be saved in run.<n>.log, where <n> is the batch
+number.
 
 Building and running on the same (RISC-V) machine
 -------------------------------------------------
@@ -125,11 +147,14 @@ the diy tool suite, make and gcc installed.
 To generate the C program, build it and run it do
 `make run-hw-tests CORES=<n> [GCC=<gcc>] [-j <m>]`
 where `<n>` is the number of hardware threads the machine can run
-**(NOTE: this will probably take a few days to complete, though the first log file should be produced within a few minutes)**.  The
-optional `GCC=<gcc>` allows you to specify a non-standard gcc path
+**(NOTE: this will probably take a few days to complete, though the first log file should be produced within a few minutes)**.
+The optional `GCC=<gcc>` allows you to specify a non-standard gcc path
 (the default is `gcc`).  The optional `-j <m>` will use `<m>`
 concurrent processes to speed up the compilation (might take a few
 hours without this option).
+
+After generating and compiling the tests program, make will run it.
+You should see the log files with the results in `hw-tests/`.
 
 Generating the program on a host machine (compile on the target)
 ----------------------------------------------------------------
@@ -164,25 +189,37 @@ Cross compilation
 Here we assume the litmus-tests-riscv repository is checked out on a
 host machine that has the diy tool suite, make and gcc, that can
 cross-compile for RISC-V, installed.
+On Ubuntu you can get gcc that is configured to cross-compile for RISC-V
+like this `sudo apt install gcc-riscv64-linux-gnu` and using
+`GCC=riscv64-linux-gnu-gcc` as explained below.
 
 To generate the C program and build it do
 `make hw-tests CORES=<n> [GCC=<gcc>] [-j <m>]`
-where `<n>`, `<gcc>` and `<m>` are as in the previous sections. Note
-that `<gcc>` should cross-compile for RISC-V.  This will produce the
-directory hw-tests with two files, run.exe and run.sh. Copy those
-files to the target machine, and run run.sh (on the target machine)
-**(NOTE: run.sh will probably take a few days to complete)**.  When
-the tests are finished run.sh will touch the file "done".  Copy all
-the `run.*.log` files back to the host, to the directory hw-tests, and
-do (on the host) `make merge-hw-tests`.
+where `<n>`, `<gcc>` and `<m>` are as in the previous sections.  Note
+that `<gcc>` should cross-compile for RISC-V.  If you installed the
+Ubuntu package gcc-riscv64-linux-gnu this will be `riscv64-linux-gnu-gcc`.
+This will produce the directory hw-tests with two files, run.exe and
+run.sh.  Copy those files to the target machine, and run run.sh (on the
+target machine) **(NOTE: run.sh will probably take a few days to complete)**.
+When the tests are finished run.sh will touch the file
+"done".  Copy all the `run.*.log` files back to the host, to the
+directory hw-tests, and do (on the host) `make merge-hw-tests`.
 
 Comparing hardware results with the models
 ------------------------------------------
-To compare the hardware results with the Flat model do `make
-compare-hw-flat`, and to compare with the Herd model do `make
-compare-hw-herd`.  This will show you the output of mcompare, from the
-diy tool suite, running on the hardware results (left) and model
-results (right).
+After completing the instructions above you can compare the results
+with the models.  But you do not have to wait for all the tests to
+complete.  In the second and third scenarios above simply carry on
+with the instructions while `run.sh` is still running (i.e., copy
+whatever `run.*.log` files exist and run `make merge-hw-tests` as
+instructed above).  In the first scenario just run `make merge-hw-tests`
+(while `make run-hw-tests` is still running).
+
+To compare the hardware results with the Flat model do
+`make compare-hw-flat`, and to compare with the Herd model do
+`make compare-hw-herd`.
+This will show you the output of mcompare, from the diy tool suite,
+running on the hardware results (left) and model results (right).
 
 If you see at the end of the output the line "!!! Warning negative
 differences in: [...]", the hardware has exhibited some behaviour that
