@@ -1,0 +1,21 @@
+AArch64 RV+LB+ctrl-[rf-fr]+ctrlfencei
+"DpCtrldW RfLeave FrBack Rfe DpCtrlIsbdW Rfe"
+Generator=diyone7 (version 7.51+6(dev))
+Prefetch=0:x=F,0:y=W,2:y=F,2:x=W
+Com=Rf Fr Rf
+Orig=DpCtrldW RfLeave FrBack Rfe DpCtrlIsbdW Rfe
+{
+0:X1=x; 0:X3=y;
+1:X1=y;
+2:X1=y; 2:X3=x;
+}
+ P0           | P1          | P2           ;
+ LDR W0,[X1]  | LDR W0,[X1] | LDR W0,[X1]  ;
+ CBNZ W0,LC00 |             | CBNZ W0,LC01 ;
+ LC00:        |             | LC01:        ;
+ MOV W2,#1    |             | ISB          ;
+ STR W2,[X3]  |             | MOV W2,#1    ;
+ MOV W4,#2    |             | STR W2,[X3]  ;
+ STR W4,[X3]  |             |              ;
+exists
+(y=2 /\ 0:X0=1 /\ 1:X0=1 /\ 2:X0=2)

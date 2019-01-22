@@ -1,0 +1,20 @@
+AArch64 RV+SB+po-ctrlfenceiss
+"PodWR DpCtrlIsbsR Fre PodWR DpCtrlIsbsR Fre"
+Generator=diyone7 (version 7.51+6(dev))
+Prefetch=0:x=F,0:y=T,1:y=F,1:x=T
+Com=Fr Fr
+Orig=PodWR DpCtrlIsbsR Fre PodWR DpCtrlIsbsR Fre
+{
+0:X1=x; 0:X3=y;
+1:X1=y; 1:X3=x;
+}
+ P0           | P1           ;
+ MOV W0,#1    | MOV W0,#1    ;
+ STR W0,[X1]  | STR W0,[X1]  ;
+ LDR W2,[X3]  | LDR W2,[X3]  ;
+ CBNZ W2,LC00 | CBNZ W2,LC01 ;
+ LC00:        | LC01:        ;
+ ISB          | ISB          ;
+ LDR W4,[X3]  | LDR W4,[X3]  ;
+exists
+(0:X4=0 /\ 1:X4=0)

@@ -1,0 +1,20 @@
+AArch64 RV+R+rfi-data+rfi-addr-rfi
+"Rfi DpDatadW Wse Rfi DpAddrdW Rfi Fre"
+Generator=diyone7 (version 7.51+6(dev))
+Prefetch=0:x=F,0:y=W,1:y=F,1:x=T
+Com=Ws Fr
+Orig=Rfi DpDatadW Wse Rfi DpAddrdW Rfi Fre
+{
+0:X1=x; 0:X4=y;
+1:X1=y; 1:X5=x;
+}
+ P0           | P1                  ;
+ MOV W0,#2    | MOV W0,#2           ;
+ STR W0,[X1]  | STR W0,[X1]         ;
+ LDR W2,[X1]  | LDR W2,[X1]         ;
+ EOR W3,W2,W2 | EOR W3,W2,W2        ;
+ ADD W3,W3,#1 | MOV W4,#1           ;
+ STR W3,[X4]  | STR W4,[X5,W3,SXTW] ;
+              | LDR W6,[X5]         ;
+exists
+(x=2 /\ y=2 /\ 0:X2=2 /\ 1:X2=2 /\ 1:X6=1)

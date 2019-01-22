@@ -1,0 +1,17 @@
+AArch64 RV+LB+poxps
+"PodRWXP RfePX PodRWXP RfePX"
+Generator=diyone7 (version 7.51+6(dev))
+Prefetch=0:x=F,0:y=W,1:y=F,1:x=W
+Com=Rf Rf
+Orig=PodRWXP RfePX PodRWXP RfePX
+{
+0:X0=x; 0:X4=y;
+1:X0=y; 1:X4=x;
+}
+ P0              | P1              ;
+ LDXR W1,[X0]    | LDXR W1,[X0]    ;
+ STXR W2,W1,[X0] | STXR W2,W1,[X0] ;
+ MOV W3,#1       | MOV W3,#1       ;
+ STR W3,[X4]     | STR W3,[X4]     ;
+exists
+(x=1 /\ y=1 /\ 0:X2=0 /\ 0:X1=1 /\ 1:X2=0 /\ 1:X1=1)

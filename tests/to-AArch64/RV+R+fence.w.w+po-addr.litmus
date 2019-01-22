@@ -1,0 +1,18 @@
+AArch64 RV+R+fence.w.w+po-addr
+"DMB.STdWW Wse PodWR DpAddrdR Fre"
+Generator=diyone7 (version 7.51+6(dev))
+Prefetch=0:x=F,0:y=W,1:y=F,1:x=T
+Com=Ws Fr
+Orig=DMB.STdWW Wse PodWR DpAddrdR Fre
+{
+0:X1=x; 0:X3=y;
+1:X1=y; 1:X3=z; 1:X6=x;
+}
+ P0          | P1                  ;
+ MOV W0,#1   | MOV W0,#2           ;
+ STR W0,[X1] | STR W0,[X1]         ;
+ DMB ST      | LDR W2,[X3]         ;
+ MOV W2,#1   | EOR W4,W2,W2        ;
+ STR W2,[X3] | LDR W5,[X6,W4,SXTW] ;
+exists
+(y=2 /\ 1:X5=0)

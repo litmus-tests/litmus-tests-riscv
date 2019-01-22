@@ -1,0 +1,19 @@
+AArch64 RV+Z6.2+fence.rw.rw+pos+fence.rw.rw
+"DMB.SYdWW Rfe PosRW Rfe DMB.SYdRW Wse"
+Generator=diyone7 (version 7.51+6(dev))
+Prefetch=0:x=F,0:y=W,2:y=F,2:x=W
+Com=Rf Rf Ws
+Orig=DMB.SYdWW Rfe PosRW Rfe DMB.SYdRW Wse
+{
+0:X1=x; 0:X3=y;
+1:X1=y;
+2:X1=y; 2:X3=x;
+}
+ P0          | P1          | P2          ;
+ MOV W0,#2   | LDR W0,[X1] | LDR W0,[X1] ;
+ STR W0,[X1] | MOV W2,#2   | DMB SY      ;
+ DMB SY      | STR W2,[X1] | MOV W2,#1   ;
+ MOV W2,#1   |             | STR W2,[X3] ;
+ STR W2,[X3] |             |             ;
+exists
+(x=2 /\ y=2 /\ 1:X0=1 /\ 2:X0=2)

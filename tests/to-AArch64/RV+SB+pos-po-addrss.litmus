@@ -1,0 +1,20 @@
+AArch64 RV+SB+pos-po-addrss
+"PosWW PodWR DpAddrsR Fre PosWW PodWR DpAddrsR Fre"
+Generator=diyone7 (version 7.51+6(dev))
+Prefetch=0:x=F,0:y=T,1:y=F,1:x=T
+Com=Fr Fr
+Orig=PosWW PodWR DpAddrsR Fre PosWW PodWR DpAddrsR Fre
+{
+0:X1=x; 0:X4=y;
+1:X1=y; 1:X4=x;
+}
+ P0                  | P1                  ;
+ MOV W0,#1           | MOV W0,#1           ;
+ STR W0,[X1]         | STR W0,[X1]         ;
+ MOV W2,#2           | MOV W2,#2           ;
+ STR W2,[X1]         | STR W2,[X1]         ;
+ LDR W3,[X4]         | LDR W3,[X4]         ;
+ EOR W5,W3,W3        | EOR W5,W3,W3        ;
+ LDR W6,[X4,W5,SXTW] | LDR W6,[X4,W5,SXTW] ;
+exists
+(x=2 /\ y=2 /\ 0:X6=0 /\ 1:X6=0)

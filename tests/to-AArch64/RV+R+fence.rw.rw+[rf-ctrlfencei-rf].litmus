@@ -1,0 +1,20 @@
+AArch64 RV+R+fence.rw.rw+[rf-ctrlfencei-rf]
+"DMB.SYdWW Wse RfLeave DpCtrlIsbdW RfBack Fre"
+Generator=diyone7 (version 7.51+6(dev))
+Prefetch=0:x=F,0:y=W,1:y=F,1:x=T,2:y=F,2:x=W
+Com=Ws Fr Rf
+Orig=DMB.SYdWW Wse RfLeave DpCtrlIsbdW RfBack Fre
+{
+0:X1=x; 0:X3=y;
+1:X1=y; 1:X3=x;
+2:X1=y; 2:X3=x;
+}
+ P0          | P1          | P2           ;
+ MOV W0,#2   | MOV W0,#2   | LDR W0,[X1]  ;
+ STR W0,[X1] | STR W0,[X1] | CBNZ W0,LC00 ;
+ DMB SY      | LDR W2,[X3] | LC00:        ;
+ MOV W2,#1   |             | ISB          ;
+ STR W2,[X3] |             | MOV W2,#1    ;
+             |             | STR W2,[X3]  ;
+exists
+(x=2 /\ y=2 /\ 1:X2=1 /\ 2:X0=2)

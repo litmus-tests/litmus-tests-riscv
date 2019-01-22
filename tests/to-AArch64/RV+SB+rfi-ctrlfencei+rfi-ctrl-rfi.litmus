@@ -1,0 +1,21 @@
+AArch64 RV+SB+rfi-ctrlfencei+rfi-ctrl-rfi
+"Rfi DpCtrlIsbdR Fre Rfi DpCtrldW Rfi Fre"
+Generator=diyone7 (version 7.51+6(dev))
+Prefetch=0:x=F,0:y=T,1:y=F,1:x=T
+Com=Fr Fr
+Orig=Rfi DpCtrlIsbdR Fre Rfi DpCtrldW Rfi Fre
+{
+0:X1=x; 0:X4=y;
+1:X1=y; 1:X4=x;
+}
+ P0           | P1           ;
+ MOV W0,#2    | MOV W0,#1    ;
+ STR W0,[X1]  | STR W0,[X1]  ;
+ LDR W2,[X1]  | LDR W2,[X1]  ;
+ CBNZ W2,LC00 | CBNZ W2,LC01 ;
+ LC00:        | LC01:        ;
+ ISB          | MOV W3,#1    ;
+ LDR W3,[X4]  | STR W3,[X4]  ;
+              | LDR W5,[X4]  ;
+exists
+(x=2 /\ 0:X2=2 /\ 0:X3=0 /\ 1:X2=1 /\ 1:X5=1)

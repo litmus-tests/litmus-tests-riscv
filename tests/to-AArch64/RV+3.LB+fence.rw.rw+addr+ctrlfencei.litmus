@@ -1,0 +1,20 @@
+AArch64 RV+3.LB+fence.rw.rw+addr+ctrlfencei
+"DMB.SYdRW Rfe DpAddrdW Rfe DpCtrlIsbdW Rfe"
+Generator=diyone7 (version 7.51+6(dev))
+Prefetch=0:x=F,0:y=W,1:y=F,1:z=W,2:z=F,2:x=W
+Com=Rf Rf Rf
+Orig=DMB.SYdRW Rfe DpAddrdW Rfe DpCtrlIsbdW Rfe
+{
+0:X1=x; 0:X3=y;
+1:X1=y; 1:X4=z;
+2:X1=z; 2:X3=x;
+}
+ P0          | P1                  | P2           ;
+ LDR W0,[X1] | LDR W0,[X1]         | LDR W0,[X1]  ;
+ DMB SY      | EOR W2,W0,W0        | CBNZ W0,LC00 ;
+ MOV W2,#1   | MOV W3,#1           | LC00:        ;
+ STR W2,[X3] | STR W3,[X4,W2,SXTW] | ISB          ;
+             |                     | MOV W2,#1    ;
+             |                     | STR W2,[X3]  ;
+exists
+(0:X0=1 /\ 1:X0=1 /\ 2:X0=1)

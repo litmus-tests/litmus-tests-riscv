@@ -1,0 +1,19 @@
+AArch64 RV+IRRWIW+addr+fence.rw.rw
+"Rfe DpAddrdR Fre Rfe DMB.SYdRW Wse"
+Generator=diyone7 (version 7.51+6(dev))
+Prefetch=1:x=F,1:y=T,3:y=F,3:x=W
+Com=Rf Fr Rf Ws
+Orig=Rfe DpAddrdR Fre Rfe DMB.SYdRW Wse
+{
+0:X1=x;
+1:X1=x; 1:X4=y;
+2:X1=y;
+3:X1=y; 3:X3=x;
+}
+ P0          | P1                  | P2          | P3          ;
+ MOV W0,#2   | LDR W0,[X1]         | MOV W0,#1   | LDR W0,[X1] ;
+ STR W0,[X1] | EOR W2,W0,W0        | STR W0,[X1] | DMB SY      ;
+             | LDR W3,[X4,W2,SXTW] |             | MOV W2,#1   ;
+             |                     |             | STR W2,[X3] ;
+exists
+(x=2 /\ 1:X0=2 /\ 1:X3=0 /\ 3:X0=1)

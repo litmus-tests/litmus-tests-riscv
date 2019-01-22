@@ -1,0 +1,24 @@
+AArch64 RV+LB+data+addr-wsi-rfi-ctrl
+"DpDatadW Rfe DpAddrdW Wsi Rfi DpCtrldW Rfe"
+Generator=diyone7 (version 7.51+6(dev))
+Prefetch=0:x=F,0:y=W,1:y=F,1:x=W
+Com=Rf Rf
+Orig=DpDatadW Rfe DpAddrdW Wsi Rfi DpCtrldW Rfe
+{
+0:X1=x; 0:X3=y;
+1:X1=y; 1:X4=z; 1:X8=x;
+}
+ P0           | P1                  ;
+ LDR W0,[X1]  | LDR W0,[X1]         ;
+ EOR W2,W0,W0 | EOR W2,W0,W0        ;
+ ADD W2,W2,#1 | MOV W3,#1           ;
+ STR W2,[X3]  | STR W3,[X4,W2,SXTW] ;
+              | MOV W5,#2           ;
+              | STR W5,[X4]         ;
+              | LDR W6,[X4]         ;
+              | CBNZ W6,LC00        ;
+              | LC00:               ;
+              | MOV W7,#1           ;
+              | STR W7,[X8]         ;
+exists
+(z=2 /\ 0:X0=1 /\ 1:X0=1 /\ 1:X6=2)

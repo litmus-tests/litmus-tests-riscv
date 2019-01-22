@@ -1,0 +1,19 @@
+AArch64 RV+3.LB+addr+pos+ctrl
+"DpAddrdW Rfe PosRW Rfe DpCtrldW Rfe"
+Generator=diyone7 (version 7.51+6(dev))
+Prefetch=0:x=F,0:y=W,2:y=F,2:x=W
+Com=Rf Rf Rf
+Orig=DpAddrdW Rfe PosRW Rfe DpCtrldW Rfe
+{
+0:X1=x; 0:X4=y;
+1:X1=y;
+2:X1=y; 2:X3=x;
+}
+ P0                  | P1          | P2           ;
+ LDR W0,[X1]         | LDR W0,[X1] | LDR W0,[X1]  ;
+ EOR W2,W0,W0        | MOV W2,#2   | CBNZ W0,LC00 ;
+ MOV W3,#1           | STR W2,[X1] | LC00:        ;
+ STR W3,[X4,W2,SXTW] |             | MOV W2,#1    ;
+                     |             | STR W2,[X3]  ;
+exists
+(y=2 /\ 0:X0=1 /\ 1:X0=1 /\ 2:X0=2)
