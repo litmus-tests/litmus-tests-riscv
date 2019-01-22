@@ -1,9 +1,5 @@
 RISCV LB+data+datapx-dataxp
 "based on: DpDatadW Rfe DpDatadWPX PodWWXP Rfe"
-Generator=diyone7 (version 7.47+2)
-Prefetch=0:x=F,0:y=W,1:y=F,1:x=W
-Com=Rf Rf
-Orig=DpDatadW Rfe DpDatadWPX PodWWXP Rfe
 {
 0:x6=x; 0:x8=y;
 1:x6=y; 1:x8=z; 1:x12=x;
