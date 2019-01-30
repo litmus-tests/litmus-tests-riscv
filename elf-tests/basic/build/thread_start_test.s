@@ -8,7 +8,7 @@
 thread_start:
 .LFB0:
 	.file 1 "thread_start_riscv64.h"
-	.loc 1 33 53
+	.loc 1 15 53
 	.cfi_startproc
 	addi	sp,sp,-32
 	.cfi_def_cfa_offset 32
@@ -17,20 +17,20 @@ thread_start:
 	addi	s0,sp,32
 	.cfi_def_cfa 8, 0
 	sd	a0,-24(s0)
-	.loc 1 34 48
+	.loc 1 16 48
 	ld	a5,-24(s0)
-	.loc 1 34 21
+	.loc 1 16 21
 	mv	a0,a5
-	.loc 1 36 3
+	.loc 1 18 3
 #APP
-# 36 "thread_start_riscv64.h" 1
+# 18 "thread_start_riscv64.h" 1
 	.word 0xC0DE000B
 # 0 "" 2
-	.loc 1 41 10
+	.loc 1 23 10
 #NO_APP
 	mv	a5,a0
 	sext.w	a5,a5
-	.loc 1 42 1
+	.loc 1 24 1
 	mv	a0,a5
 	ld	s0,24(sp)
 	.cfi_restore 8
@@ -169,7 +169,7 @@ main:
 	.byte	0x7
 	.4byte	.LASF8
 	.byte	0x1
-	.byte	0x21
+	.byte	0xf
 	.byte	0x13
 	.4byte	0x43
 	.8byte	.LFB0
@@ -180,7 +180,7 @@ main:
 	.byte	0x6
 	.string	"fp"
 	.byte	0x1
-	.byte	0x21
+	.byte	0xf
 	.byte	0x29
 	.4byte	0xec
 	.byte	0x2
@@ -189,7 +189,7 @@ main:
 	.byte	0x8
 	.4byte	.LASF0
 	.byte	0x1
-	.byte	0x22
+	.byte	0x10
 	.byte	0x15
 	.4byte	0xf2
 	.byte	0x1
@@ -197,7 +197,7 @@ main:
 	.byte	0x8
 	.4byte	.LASF1
 	.byte	0x1
-	.byte	0x23
+	.byte	0x11
 	.byte	0x15
 	.4byte	0xf2
 	.byte	0x1

@@ -85,9 +85,9 @@ extern void atomic_flag_clear (volatile atomic_flag *);
 extern void atomic_flag_clear_explicit (volatile atomic_flag *, memory_order);
 # 2 "demsky.c" 2
 # 1 "thread_start_riscv64.h" 1
-# 33 "thread_start_riscv64.h"
+# 15 "thread_start_riscv64.h"
 
-# 33 "thread_start_riscv64.h"
+# 15 "thread_start_riscv64.h"
 static inline int thread_start( void (* fp )(int) ) {
   register long int argument __asm__ ("x10") = (long int)fp;
   register long int result __asm__ ("x10");

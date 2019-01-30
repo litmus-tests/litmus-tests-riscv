@@ -11,15 +11,15 @@ Disassembly of section .note.gnu.build-id:
    100ee:	0000                	unimp
    100f0:	00000003          	lb	zero,0(zero) # 0 <main-0x1010c>
    100f4:	00554e47          	fmsub.s	ft8,fa0,ft5,ft0,rmm
-   100f8:	a05d                	j	1019e <thread2+0x32>
-   100fa:	f762                	sd	s8,424(sp)
-   100fc:	041e                	slli	s0,s0,0x7
-   100fe:	7d08                	ld	a0,56(a0)
-   10100:	1ec45e0b          	0x1ec45e0b
-   10104:	cb39                	beqz	a4,1015a <thread1+0x2e>
-   10106:	edb4                	sd	a3,88(a1)
-   10108:	6cc4                	ld	s1,152(s1)
-   1010a:	9d98                	0x9d98
+   100f8:	7bf9                	lui	s7,0xffffe
+   100fa:	ae60                	fsd	fs0,216(a2)
+   100fc:	4662                	lw	a2,24(sp)
+   100fe:	29020013          	addi	zero,tp,656 # 290 <main-0xfe7c>
+   10102:	8212                	mv	tp,tp
+   10104:	1005                	c.nop	-31
+   10106:	40bd                	li	ra,15
+   10108:	bc8d                	j	fb7a <main-0x592>
+   1010a:	515d                	li	sp,-9
 
 Disassembly of section .text:
 
@@ -607,23 +607,23 @@ Disassembly of section .debug_info:
  408:	1600                	addi	s0,sp,800
  40a:	0126                	slli	sp,sp,0x9
  40c:	0000                	unimp
- 40e:	2102                	fld	ft2,0(sp)
+ 40e:	0f02                	c.slli64	t5
  410:	00008d13          	mv	s10,ra
  414:	0300                	addi	s0,sp,384
  416:	043e                	slli	s0,s0,0xf
  418:	0000                	unimp
  41a:	00706617          	auipc	a2,0x706
- 41e:	2102                	fld	ft2,0(sp)
+ 41e:	0f02                	c.slli64	t5
  420:	4929                	li	s2,10
  422:	0004                	0x4
  424:	1400                	addi	s0,sp,544
  426:	0090                	addi	a2,sp,64
  428:	0000                	unimp
- 42a:	2202                	fld	ft4,0(sp)
+ 42a:	1002                	c.slli	zero,0x20
  42c:	9415                	srai	s0,s0,0x25
  42e:	0000                	unimp
  430:	1400                	addi	s0,sp,544
- 432:	011f 0000 2302      	0x23020000011f
+ 432:	011f 0000 1102      	0x11020000011f
  438:	9415                	srai	s0,s0,0x25
  43a:	0000                	unimp
  43c:	0000                	unimp
@@ -1038,7 +1038,7 @@ Disassembly of section .debug_line:
  25c:	00090103          	lb	sp,0(s2)
  260:	0100                	addi	s0,sp,128
  262:	0204                	addi	s1,sp,256
- 264:	00090703          	lb	a4,0(s2)
+ 264:	00097503          	0x97503
  268:	0100                	addi	s0,sp,128
  26a:	1505                	addi	a0,a0,-31
  26c:	0306                	slli	t1,t1,0x1
@@ -1053,10 +1053,10 @@ Disassembly of section .debug_line:
  282:	00090503          	lb	a0,0(s2)
  286:	0100                	addi	s0,sp,128
  288:	0104                	addi	s1,sp,128
- 28a:	00097303          	0x97303
+ 28a:	00090503          	lb	a0,0(s2)
  28e:	0100                	addi	s0,sp,128
  290:	0204                	addi	s1,sp,256
- 292:	00090603          	lb	a2,0(s2)
+ 292:	00097403          	0x97403
  296:	0100                	addi	s0,sp,128
  298:	1505                	addi	a0,a0,-31
  29a:	0306                	slli	t1,t1,0x1
@@ -1071,7 +1071,7 @@ Disassembly of section .debug_line:
  2b0:	00090503          	lb	a0,0(s2)
  2b4:	0100                	addi	s0,sp,128
  2b6:	0104                	addi	s1,sp,128
- 2b8:	00097403          	0x97403
+ 2b8:	00090603          	lb	a2,0(s2)
  2bc:	0100                	addi	s0,sp,128
  2be:	0105                	addi	sp,sp,1
  2c0:	0306                	slli	t1,t1,0x1

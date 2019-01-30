@@ -151,17 +151,17 @@ main:
 .LBB14:
 .LBB15:
 	.file 2 "thread_start_riscv64.h"
-	.loc 2 34 3
-	.loc 2 34 21 is_stmt 0
+	.loc 2 16 3
+	.loc 2 16 21 is_stmt 0
 	lui	a0,%hi(thread1)
 	addi	a0,a0,%lo(thread1)
-	.loc 2 35 3 is_stmt 1
-	.loc 2 36 3
+	.loc 2 17 3 is_stmt 1
+	.loc 2 18 3
 #APP
-# 36 "thread_start_riscv64.h" 1
+# 18 "thread_start_riscv64.h" 1
 	.word 0xC0DE000B
 # 0 "" 2
-	.loc 2 41 3
+	.loc 2 23 3
 .LVL19:
 #NO_APP
 .LBE15:
@@ -169,18 +169,18 @@ main:
 	.loc 1 28 3
 .LBB16:
 .LBB17:
-	.loc 2 34 3
-	.loc 2 34 21 is_stmt 0
+	.loc 2 16 3
+	.loc 2 16 21 is_stmt 0
 	lui	a0,%hi(thread2)
 .LVL20:
 	addi	a0,a0,%lo(thread2)
-	.loc 2 35 3 is_stmt 1
-	.loc 2 36 3
+	.loc 2 17 3 is_stmt 1
+	.loc 2 18 3
 #APP
-# 36 "thread_start_riscv64.h" 1
+# 18 "thread_start_riscv64.h" 1
 	.word 0xC0DE000B
 # 0 "" 2
-	.loc 2 41 3
+	.loc 2 23 3
 .LVL21:
 #NO_APP
 .LBE17:
@@ -646,7 +646,7 @@ y:
 	.byte	0x16
 	.4byte	.LASF31
 	.byte	0x2
-	.byte	0x21
+	.byte	0xf
 	.byte	0x13
 	.4byte	0x91
 	.byte	0x3
@@ -654,19 +654,19 @@ y:
 	.byte	0x17
 	.string	"fp"
 	.byte	0x2
-	.byte	0x21
+	.byte	0xf
 	.byte	0x29
 	.4byte	0x46d
 	.byte	0x14
 	.4byte	.LASF26
 	.byte	0x2
-	.byte	0x22
+	.byte	0x10
 	.byte	0x15
 	.4byte	0x98
 	.byte	0x14
 	.4byte	.LASF27
 	.byte	0x2
-	.byte	0x23
+	.byte	0x11
 	.byte	0x15
 	.4byte	0x98
 	.byte	0

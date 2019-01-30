@@ -4,7 +4,7 @@
 # 1 "<command-line>"
 # 1 "thread_start_test.c"
 # 1 "thread_start_riscv64.h" 1
-# 33 "thread_start_riscv64.h"
+# 15 "thread_start_riscv64.h"
 static inline int thread_start( void (* fp )(int) ) {
   register long int argument __asm__ ("x10") = (long int)fp;
   register long int result __asm__ ("x10");
