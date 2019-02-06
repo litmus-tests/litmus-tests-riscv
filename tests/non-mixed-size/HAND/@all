@@ -149,3 +149,6 @@ CoWR.litmus
 RDW.litmus
 ####Regression rmem vs. herd
 OpVsHerd01.litmus
+## The test that used to be called 2.4
+SB+rfi-pos.litmus
+SB+rfi-addrs.litmus
