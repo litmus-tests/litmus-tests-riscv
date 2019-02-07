@@ -127,10 +127,10 @@ hw-%-src.tgz: hw-%-src/run.sh | hw-%-src
 	tar -caf $@ hw-%-src
 
 # Merge the results
-merge-hw-tests:
+merge-hw-tests merge-hw-single-test: merge-hw-%:
 	mkdir -p hw-results
-	$(MSUM) hw-tests/run.*.log > hw-results/run.log
-.PHONY: merge-hw-tests
+	$(MSUM) hw-$*/run.*.log > hw-results/run.log
+.PHONY: merge-hw-tests merge-hw-single-test
 
 # Compare hardware results with the models
 compare-hw-flat compare-hw-herd: compare-hw-%:
