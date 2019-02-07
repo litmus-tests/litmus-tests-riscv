@@ -116,15 +116,15 @@ run-hw-tests: | hw-tests
 	$(MAKE) merge-hw-tests
 .PHONY: run-hw-tests
 
-# Compare hardware results with the models
-compare-hw-flat compare-hw-herd: compare-hw-%:
-	$(MCOMPARE) -nohash hw-results/run.log model-results/$*.logs
-.PHONY: compare-hw-flat compare-hw-herd
-
 # Generate and cross-compile the tests, to be run on a different machine
-hw-tests: hw-tests-src/run.exe hw-tests-src/run.sh
+hw-single-test: CORES ?= $(shell grep '^[[:space:]]*P0\([[:space:]]*|[[:space:]]*P[0-9]\+\)\+[[:space:]]*;[[:space:]]*$$' "$(LITMUSFILE)" | sed 's/[^P]//g' | tr -d '\n' | wc -m)
+hw-tests hw-single-test: hw-%: hw-%-src/run.exe hw-%-src/run.sh
 	mkdir -p $@
 	cp $^ $@
+
+# Generate the C program that runs the tests, but do not compile it
+hw-%-src.tgz: hw-%-src/run.sh | hw-%-src
+	tar -caf $@ hw-%-src
 
 # Merge the results
 merge-hw-tests:
@@ -132,16 +132,24 @@ merge-hw-tests:
 	$(MSUM) hw-tests/run.*.log > hw-results/run.log
 .PHONY: merge-hw-tests
 
-hw-tests-src/run.exe: | hw-tests-src
+# Compare hardware results with the models
+compare-hw-flat compare-hw-herd: compare-hw-%:
+	$(MCOMPARE) -nohash hw-results/run.log model-results/$*.logs
+.PHONY: compare-hw-flat compare-hw-herd
+
+hw-%-src/run.exe: | hw-%-src
 	$(MAKE) -C $|
 
 ifneq "$(filter run-hw-tests hw-tests,$(MAKECMDGOALS))" ""
 hw-tests-src: gcc.excl
 endif
 hw-tests-src: instructions.excl
+hw-tests-src: TESTFILE = $(ATFILE)
+hw-single-test-src: TESTFILE = $(LITMUSFILE)
+hw-%-src:
 	rm -rf $@
 	mkdir -p $@
-	$(LITMUS) -mach ./riscv.cfg -avail $(CORES) $(foreach e,$^,-excl $(e)) -o $@ $(ATFILE)
+	$(LITMUS) -mach ./riscv.cfg -avail $(CORES) $(foreach e,$^,-excl $(e)) -o $@ "$(TESTFILE)"
 
 ### This will produce 1.2 billion results for a 2-thread test
 # -s values for litmus run.exe
@@ -153,8 +161,8 @@ count := $(shell echo '$(words $(STRIDES)) * $(words $(SIZES))' | bc)
 # the -s argument and the number of cores in the machine, in order to
 # produce 20 million results for a 2-thread test
 r-for-s = $(shell printf 'scale=2; x=40000000 / (%d * $(CORES)) + 0.5; scale=0; if (x > 1) x/1 else 1\n' "`echo '$1' | sed 's/[mM]$$/000000/; s/[kK]$$/000/'`" | bc | sed 's/000000$$/M/; s/000$$/k/')
-hw-tests-src/run.sh: | hw-tests-src
-	{ echo '#!/bin/sh';\
+hw-%-src/run.sh: | hw-%-src
+	@{ echo '#!/bin/sh';\
 	  echo 'echo "Running a quick test"';\
 	  echo './run.exe -st 1 -s 5k -r 20 > run.test.log';\
 	  echo 'c=0';\
@@ -169,10 +177,6 @@ hw-tests-src/run.sh: | hw-tests-src
 	  echo 'echo "Done"';\
 	} > $@
 	chmod a+x $@
-
-# Generate the C program that runs the tests, but do not compile it
-hw-tests-src.tgz: %.tgz: %/run.sh | %
-	tar -caf $@ $*
 
 # Before generating the program that runs all the tests, we try to
 # build the following tests individually. A failure to generate one of
@@ -227,11 +231,12 @@ gcc.excl:
 exclude-instructions:
 	$(MSORT) $(ATFILE) | grep '^[^#]' | xargs awk '/P0/ {x=1;next;} /[^;]$$/ {x=0;next;} x==1 {print $$0}' | tr '[:upper:]|' '[:lower:]\n' | awk '{print $$1}' | sed '/.*:$$/d; s/;$$//; /^[[:space:]]*$$/d' | sort -u | awk '{print "#",$$0}' > $@
 
-instructions.excl: insts = $(shell grep '^[^#]' excl-instructions)
+instructions.excl: insts = $(shell grep '^[^#]' exclude-instructions)
 instructions.excl: exclude-instructions
 	$(call grep-tests,$(foreach i,$(insts),-F "$(i)")) > $@
 
 clean-hw-tests:
 	rm -rf gcc-tests gcc.excl instructions.excl
 	rm -rf hw-tests hw-tests-src hw-tests-src.tgz
+	rm -rf hw-single-test hw-single-test-src hw-single-test-src.tgz
 .PHONY: clean-hw-tests
