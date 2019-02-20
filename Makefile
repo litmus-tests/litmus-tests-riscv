@@ -204,7 +204,7 @@ ifneq "\# $(shell $(GCC) --version | head -1)" "$(shell head -1 gcc.excl)"
 gcc.excl: FORCE
 endif
 endif
-gcc.excl: grep-tests = $(if $(1),$(MSORT) $(ATFILE) | grep '^[^\#]' | xargs grep -li $(1) | sed -e 's|.*/||' -e 's|\.litmus||',echo)
+gcc.excl: grep-tests = $(if $(1),$(MSORT) -d $(ATFILE) | grep '^[^\#]' | xargs grep -li $(1) | sed -e 's|.*/||' -e 's|\.litmus||',echo)
 gcc.excl:
 	rm -rf gcc-tests $@
 	# First we check if we are able to generate and build the MP test (sanity)
@@ -229,7 +229,7 @@ gcc.excl:
 	} >> $@
 
 exclude-instructions:
-	$(MSORT) $(ATFILE) | grep '^[^#]' | xargs awk '/P0/ {x=1;next;} /[^;]$$/ {x=0;next;} x==1 {print $$0}' | tr '[:upper:]|' '[:lower:]\n' | awk '{print $$1}' | sed '/.*:$$/d; s/;$$//; /^[[:space:]]*$$/d' | sort -u | awk '{print "#",$$0}' > $@
+	$(MSORT) -d $(ATFILE) | grep '^[^#]' | xargs awk '/P0/ {x=1;next;} /[^;]$$/ {x=0;next;} x==1 {print $$0}' | tr '[:upper:]|' '[:lower:]\n' | awk '{print $$1}' | sed '/.*:$$/d; s/;$$//; /^[[:space:]]*$$/d' | sort -u | awk '{print "#",$$0}' > $@
 
 instructions.excl: insts = $(shell grep '^[^#]' exclude-instructions)
 instructions.excl: exclude-instructions
