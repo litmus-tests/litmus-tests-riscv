@@ -2,7 +2,6 @@
 	.option nopic
 	.text
 .Ltext0:
-	.cfi_sections	.debug_frame
 	.align	2
 	.globl	thread1
 	.type	thread1, @function
@@ -10,7 +9,6 @@ thread1:
 .LFB1:
 	.file 1 "demsky.c"
 	.loc 1 9 23
-	.cfi_startproc
 .LVL0:
 	.loc 1 10 3
 .LBB6:
@@ -80,7 +78,6 @@ thread1:
 .LBE13:
 	.loc 1 15 1 is_stmt 0
 	ret
-	.cfi_endproc
 .LFE1:
 	.size	thread1, .-thread1
 	.align	2
@@ -89,7 +86,6 @@ thread1:
 thread2:
 .LFB2:
 	.loc 1 17 23 is_stmt 1
-	.cfi_startproc
 .LVL8:
 	.loc 1 18 3
 .LBB14:
@@ -159,7 +155,6 @@ thread2:
 .LBE21:
 	.loc 1 23 1 is_stmt 0
 	ret
-	.cfi_endproc
 .LFE2:
 	.size	thread2, .-thread2
 	.section	.text.startup,"ax",@progbits
@@ -169,7 +164,6 @@ thread2:
 main:
 .LFB3:
 	.loc 1 25 12 is_stmt 1
-	.cfi_startproc
 	.loc 1 26 3
 	.loc 1 27 3
 .LVL16:
@@ -215,7 +209,6 @@ main:
 	li	a0,1
 .LVL20:
 	ret
-	.cfi_endproc
 .LFE3:
 	.size	main, .-main
 	.comm	r4,4,4
@@ -237,6 +230,45 @@ x:
 y:
 	.word	1
 	.word	1
+	.section	.debug_frame,"",@progbits
+.Lframe0:
+	.4byte	.LECIE0-.LSCIE0
+.LSCIE0:
+	.4byte	0xffffffff
+	.byte	0x3
+	.string	""
+	.byte	0x1
+	.byte	0x7c
+	.byte	0x1
+	.byte	0xc
+	.byte	0x2
+	.byte	0
+	.align	3
+.LECIE0:
+.LSFDE0:
+	.4byte	.LEFDE0-.LASFDE0
+.LASFDE0:
+	.4byte	.Lframe0
+	.8byte	.LFB1
+	.8byte	.LFE1-.LFB1
+	.align	3
+.LEFDE0:
+.LSFDE2:
+	.4byte	.LEFDE2-.LASFDE2
+.LASFDE2:
+	.4byte	.Lframe0
+	.8byte	.LFB2
+	.8byte	.LFE2-.LFB2
+	.align	3
+.LEFDE2:
+.LSFDE4:
+	.4byte	.LEFDE4-.LASFDE4
+.LASFDE4:
+	.4byte	.Lframe0
+	.8byte	.LFB3
+	.8byte	.LFE3-.LFB3
+	.align	3
+.LEFDE4:
 	.text
 .Letext0:
 	.file 3 "/usr/lib/gcc-cross/riscv64-linux-gnu/8/include/stdatomic.h"
@@ -1243,24 +1275,22 @@ y:
 	.section	.debug_str,"MS",@progbits,1
 .LASF4:
 	.string	"memory_order_acq_rel"
-.LASF28:
-	.string	"GNU C11 8.2.0 -march=rv64g -mabi=lp64d -g -O2 -std=c11 -ffreestanding"
 .LASF25:
 	.string	"thread1"
 .LASF20:
 	.string	"thread2"
 .LASF16:
 	.string	"long long unsigned int"
-.LASF10:
-	.string	"unsigned char"
+.LASF28:
+	.string	"GNU C11 8.2.0 -march=rv64g -mabi=lp64d -g -O2 -std=c11 -fno-dwarf2-cfi-asm -ffreestanding"
 .LASF14:
 	.string	"long unsigned int"
 .LASF26:
 	.string	"argument"
 .LASF12:
 	.string	"short unsigned int"
-.LASF22:
-	.string	"__atomic_store_ptr"
+.LASF10:
+	.string	"unsigned char"
 .LASF2:
 	.string	"memory_order_acquire"
 .LASF5:
@@ -1301,6 +1331,8 @@ y:
 	.string	"long int"
 .LASF9:
 	.string	"signed char"
+.LASF22:
+	.string	"__atomic_store_ptr"
 .LASF23:
 	.string	"__atomic_store_tmp"
 .LASF7:

@@ -2,7 +2,6 @@
 	.option nopic
 	.text
 .Ltext0:
-	.cfi_sections	.debug_frame
 	.align	2
 	.globl	f
 	.type	f, @function
@@ -10,7 +9,6 @@ f:
 .LFB0:
 	.file 1 "function_call_1.c"
 	.loc 1 3 14
-	.cfi_startproc
 .LVL0:
 	.loc 1 4 3
 	.loc 1 5 3
@@ -26,7 +24,6 @@ f:
 	.loc 1 8 1 is_stmt 0
 	sext.w	a0,a0
 	ret
-	.cfi_endproc
 .LFE0:
 	.size	f, .-f
 	.align	2
@@ -35,11 +32,10 @@ f:
 main:
 .LFB1:
 	.loc 1 10 12 is_stmt 1
-	.cfi_startproc
 	addi	sp,sp,-16
-	.cfi_def_cfa_offset 16
+.LCFI0:
 	sd	ra,8(sp)
-	.cfi_offset 1, -8
+.LCFI1:
 	.loc 1 11 3
 	.loc 1 12 3
 	.loc 1 12 7 is_stmt 0
@@ -56,11 +52,10 @@ main:
 	.loc 1 17 1 is_stmt 0
 	li	a0,1
 	ld	ra,8(sp)
-	.cfi_restore 1
+.LCFI2:
 	addi	sp,sp,16
-	.cfi_def_cfa_offset 0
+.LCFI3:
 	jr	ra
-	.cfi_endproc
 .LFE1:
 	.size	main, .-main
 	.globl	n
@@ -70,6 +65,52 @@ main:
 	.size	n, 4
 n:
 	.word	3
+	.section	.debug_frame,"",@progbits
+.Lframe0:
+	.4byte	.LECIE0-.LSCIE0
+.LSCIE0:
+	.4byte	0xffffffff
+	.byte	0x3
+	.string	""
+	.byte	0x1
+	.byte	0x7c
+	.byte	0x1
+	.byte	0xc
+	.byte	0x2
+	.byte	0
+	.align	3
+.LECIE0:
+.LSFDE0:
+	.4byte	.LEFDE0-.LASFDE0
+.LASFDE0:
+	.4byte	.Lframe0
+	.8byte	.LFB0
+	.8byte	.LFE0-.LFB0
+	.align	3
+.LEFDE0:
+.LSFDE2:
+	.4byte	.LEFDE2-.LASFDE2
+.LASFDE2:
+	.4byte	.Lframe0
+	.8byte	.LFB1
+	.8byte	.LFE1-.LFB1
+	.byte	0x4
+	.4byte	.LCFI0-.LFB1
+	.byte	0xe
+	.byte	0x10
+	.byte	0x4
+	.4byte	.LCFI1-.LCFI0
+	.byte	0x81
+	.byte	0x2
+	.byte	0x4
+	.4byte	.LCFI2-.LCFI1
+	.byte	0xc1
+	.byte	0x4
+	.4byte	.LCFI3-.LCFI2
+	.byte	0xe
+	.byte	0
+	.align	3
+.LEFDE2:
 	.text
 .Letext0:
 	.section	.debug_info,"",@progbits
@@ -454,12 +495,12 @@ n:
 	.section	.debug_line,"",@progbits
 .Ldebug_line0:
 	.section	.debug_str,"MS",@progbits,1
+.LASF1:
+	.string	"GNU C11 8.2.0 -march=rv64g -mabi=lp64d -g -O1 -std=c11 -fno-dwarf2-cfi-asm -ffreestanding"
 .LASF2:
 	.string	"function_call_1.c"
 .LASF3:
 	.string	"/home/shaked/rems/litmus-tests-riscv/elf-tests/basic"
-.LASF1:
-	.string	"GNU C11 8.2.0 -march=rv64g -mabi=lp64d -g -O1 -std=c11 -ffreestanding"
 .LASF0:
 	.string	"main"
 	.ident	"GCC: (Ubuntu 8.2.0-7ubuntu1) 8.2.0"

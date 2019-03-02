@@ -11,6 +11,8 @@ READELF = riscv64-linux-gnu-readelf
 
 ### for rmem:
 CFLAGS = -g -static -std=c11 -nostdlib
+# this is to make gcc generate .debug_frame
+CFLAGS += -fno-dwarf2-cfi-asm
 # this is needed only for tests that call start_thread
 CFLAGS += -D__THREAD_START_H=\"thread_start_riscv64.h\"
 # g is shorthand for imafd, in particular we do not support c (Compressed Instructions)

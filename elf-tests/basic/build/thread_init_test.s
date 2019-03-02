@@ -2,7 +2,6 @@
 	.option nopic
 	.text
 .Ltext0:
-	.cfi_sections	.debug_frame
 	.section	.text.startup,"ax",@progbits
 	.align	2
 	.globl	main
@@ -11,7 +10,6 @@ main:
 .LFB0:
 	.file 1 "thread_init_test.c"
 	.loc 1 5 12
-	.cfi_startproc
 .L2:
 	.loc 1 6 3
 	.loc 1 11 3
@@ -25,10 +23,32 @@ main:
 	.loc 1 36 1 is_stmt 0
 	li	a0,1
 	ret
-	.cfi_endproc
 .LFE0:
 	.size	main, .-main
 	.comm	t,4,4
+	.section	.debug_frame,"",@progbits
+.Lframe0:
+	.4byte	.LECIE0-.LSCIE0
+.LSCIE0:
+	.4byte	0xffffffff
+	.byte	0x3
+	.string	""
+	.byte	0x1
+	.byte	0x7c
+	.byte	0x1
+	.byte	0xc
+	.byte	0x2
+	.byte	0
+	.align	3
+.LECIE0:
+.LSFDE0:
+	.4byte	.LEFDE0-.LASFDE0
+.LASFDE0:
+	.4byte	.Lframe0
+	.8byte	.LFB0
+	.8byte	.LFE0-.LFB0
+	.align	3
+.LEFDE0:
 	.text
 .Letext0:
 	.section	.debug_info,"",@progbits
@@ -273,14 +293,14 @@ main:
 	.section	.debug_line,"",@progbits
 .Ldebug_line0:
 	.section	.debug_str,"MS",@progbits,1
+.LASF0:
+	.string	"GNU C11 8.2.0 -march=rv64g -mabi=lp64d -g -O2 -std=c11 -fno-dwarf2-cfi-asm -ffreestanding"
 .LASF4:
 	.string	"thread_init_1"
 .LASF2:
 	.string	"/home/shaked/rems/litmus-tests-riscv/elf-tests/basic"
 .LASF3:
 	.string	"main"
-.LASF0:
-	.string	"GNU C11 8.2.0 -march=rv64g -mabi=lp64d -g -O2 -std=c11 -ffreestanding"
 .LASF1:
 	.string	"thread_init_test.c"
 	.ident	"GCC: (Ubuntu 8.2.0-7ubuntu1) 8.2.0"

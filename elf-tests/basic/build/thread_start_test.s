@@ -2,20 +2,18 @@
 	.option nopic
 	.text
 .Ltext0:
-	.cfi_sections	.debug_frame
 	.align	2
 	.type	thread_start, @function
 thread_start:
 .LFB0:
 	.file 1 "thread_start_riscv64.h"
 	.loc 1 15 53
-	.cfi_startproc
 	addi	sp,sp,-32
-	.cfi_def_cfa_offset 32
+.LCFI0:
 	sd	s0,24(sp)
-	.cfi_offset 8, -8
+.LCFI1:
 	addi	s0,sp,32
-	.cfi_def_cfa 8, 0
+.LCFI2:
 	sd	a0,-24(s0)
 	.loc 1 16 48
 	ld	a5,-24(s0)
@@ -33,11 +31,10 @@ thread_start:
 	.loc 1 24 1
 	mv	a0,a5
 	ld	s0,24(sp)
-	.cfi_restore 8
+.LCFI3:
 	addi	sp,sp,32
-	.cfi_def_cfa_register 2
+.LCFI4:
 	jr	ra
-	.cfi_endproc
 .LFE0:
 	.size	thread_start, .-thread_start
 	.comm	new_tid,4,4
@@ -48,13 +45,12 @@ f:
 .LFB1:
 	.file 2 "thread_start_test.c"
 	.loc 2 5 17
-	.cfi_startproc
 	addi	sp,sp,-32
-	.cfi_def_cfa_offset 32
+.LCFI5:
 	sd	s0,24(sp)
-	.cfi_offset 8, -8
+.LCFI6:
 	addi	s0,sp,32
-	.cfi_def_cfa 8, 0
+.LCFI7:
 	mv	a5,a0
 	sw	a5,-20(s0)
 	.loc 2 6 11
@@ -64,11 +60,10 @@ f:
 	.loc 2 7 1
 	nop
 	ld	s0,24(sp)
-	.cfi_restore 8
+.LCFI8:
 	addi	sp,sp,32
-	.cfi_def_cfa_register 2
+.LCFI9:
 	jr	ra
-	.cfi_endproc
 .LFE1:
 	.size	f, .-f
 	.align	2
@@ -77,15 +72,13 @@ f:
 main:
 .LFB2:
 	.loc 2 9 12
-	.cfi_startproc
 	addi	sp,sp,-16
-	.cfi_def_cfa_offset 16
+.LCFI10:
 	sd	ra,8(sp)
 	sd	s0,0(sp)
-	.cfi_offset 1, -8
-	.cfi_offset 8, -16
+.LCFI11:
 	addi	s0,sp,16
-	.cfi_def_cfa 8, 0
+.LCFI12:
 	.loc 2 10 3
 	lui	a5,%hi(f)
 	addi	a0,a5,%lo(f)
@@ -99,15 +92,119 @@ main:
 	.loc 2 14 1
 	mv	a0,a5
 	ld	ra,8(sp)
-	.cfi_restore 1
+.LCFI13:
 	ld	s0,0(sp)
-	.cfi_restore 8
+.LCFI14:
 	addi	sp,sp,16
-	.cfi_def_cfa_register 2
+.LCFI15:
 	jr	ra
-	.cfi_endproc
 .LFE2:
 	.size	main, .-main
+	.section	.debug_frame,"",@progbits
+.Lframe0:
+	.4byte	.LECIE0-.LSCIE0
+.LSCIE0:
+	.4byte	0xffffffff
+	.byte	0x3
+	.string	""
+	.byte	0x1
+	.byte	0x7c
+	.byte	0x1
+	.byte	0xc
+	.byte	0x2
+	.byte	0
+	.align	3
+.LECIE0:
+.LSFDE0:
+	.4byte	.LEFDE0-.LASFDE0
+.LASFDE0:
+	.4byte	.Lframe0
+	.8byte	.LFB0
+	.8byte	.LFE0-.LFB0
+	.byte	0x4
+	.4byte	.LCFI0-.LFB0
+	.byte	0xe
+	.byte	0x20
+	.byte	0x4
+	.4byte	.LCFI1-.LCFI0
+	.byte	0x88
+	.byte	0x2
+	.byte	0x4
+	.4byte	.LCFI2-.LCFI1
+	.byte	0xc
+	.byte	0x8
+	.byte	0
+	.byte	0x4
+	.4byte	.LCFI3-.LCFI2
+	.byte	0xc8
+	.byte	0x4
+	.4byte	.LCFI4-.LCFI3
+	.byte	0xd
+	.byte	0x2
+	.align	3
+.LEFDE0:
+.LSFDE2:
+	.4byte	.LEFDE2-.LASFDE2
+.LASFDE2:
+	.4byte	.Lframe0
+	.8byte	.LFB1
+	.8byte	.LFE1-.LFB1
+	.byte	0x4
+	.4byte	.LCFI5-.LFB1
+	.byte	0xe
+	.byte	0x20
+	.byte	0x4
+	.4byte	.LCFI6-.LCFI5
+	.byte	0x88
+	.byte	0x2
+	.byte	0x4
+	.4byte	.LCFI7-.LCFI6
+	.byte	0xc
+	.byte	0x8
+	.byte	0
+	.byte	0x4
+	.4byte	.LCFI8-.LCFI7
+	.byte	0xc8
+	.byte	0x4
+	.4byte	.LCFI9-.LCFI8
+	.byte	0xd
+	.byte	0x2
+	.align	3
+.LEFDE2:
+.LSFDE4:
+	.4byte	.LEFDE4-.LASFDE4
+.LASFDE4:
+	.4byte	.Lframe0
+	.8byte	.LFB2
+	.8byte	.LFE2-.LFB2
+	.byte	0x4
+	.4byte	.LCFI10-.LFB2
+	.byte	0xe
+	.byte	0x10
+	.byte	0x4
+	.4byte	.LCFI11-.LCFI10
+	.byte	0x81
+	.byte	0x2
+	.byte	0x88
+	.byte	0x4
+	.byte	0x4
+	.4byte	.LCFI12-.LCFI11
+	.byte	0xc
+	.byte	0x8
+	.byte	0
+	.byte	0x4
+	.4byte	.LCFI13-.LCFI12
+	.byte	0xc1
+	.byte	0x4
+	.4byte	.LCFI14-.LCFI13
+	.byte	0xc8
+	.byte	0x4
+	.4byte	.LCFI15-.LCFI14
+	.byte	0xd
+	.byte	0x2
+	.align	3
+.LEFDE4:
+	.text
 .Letext0:
 	.section	.debug_info,"",@progbits
 .Ldebug_info0:
@@ -432,16 +529,16 @@ main:
 	.section	.debug_line,"",@progbits
 .Ldebug_line0:
 	.section	.debug_str,"MS",@progbits,1
-.LASF2:
-	.string	"long int"
 .LASF5:
 	.string	"/home/shaked/rems/litmus-tests-riscv/elf-tests/basic"
+.LASF3:
+	.string	"GNU C11 8.2.0 -march=rv64g -mabi=lp64d -g -O0 -std=c11 -fno-dwarf2-cfi-asm -ffreestanding"
 .LASF1:
 	.string	"result"
 .LASF4:
 	.string	"thread_start_test.c"
-.LASF3:
-	.string	"GNU C11 8.2.0 -march=rv64g -mabi=lp64d -g -O0 -std=c11 -ffreestanding"
+.LASF2:
+	.string	"long int"
 .LASF7:
 	.string	"main"
 .LASF0:

@@ -2,20 +2,18 @@
 	.option nopic
 	.text
 .Ltext0:
-	.cfi_sections	.debug_frame
 	.align	2
 	.type	thread_start, @function
 thread_start:
 .LFB0:
 	.file 1 "thread_start_riscv64.h"
 	.loc 1 15 53
-	.cfi_startproc
 	addi	sp,sp,-32
-	.cfi_def_cfa_offset 32
+.LCFI0:
 	sd	s0,24(sp)
-	.cfi_offset 8, -8
+.LCFI1:
 	addi	s0,sp,32
-	.cfi_def_cfa 8, 0
+.LCFI2:
 	sd	a0,-24(s0)
 	.loc 1 16 48
 	ld	a5,-24(s0)
@@ -33,11 +31,10 @@ thread_start:
 	.loc 1 24 1
 	mv	a0,a5
 	ld	s0,24(sp)
-	.cfi_restore 8
+.LCFI3:
 	addi	sp,sp,32
-	.cfi_def_cfa_register 2
+.LCFI4:
 	jr	ra
-	.cfi_endproc
 .LFE0:
 	.size	thread_start, .-thread_start
 	.globl	x
@@ -63,13 +60,12 @@ thread0:
 .LFB1:
 	.file 2 "atomics_test_2.c"
 	.loc 2 10 23
-	.cfi_startproc
 	addi	sp,sp,-48
-	.cfi_def_cfa_offset 48
+.LCFI5:
 	sd	s0,40(sp)
-	.cfi_offset 8, -8
+.LCFI6:
 	addi	s0,sp,48
-	.cfi_def_cfa 8, 0
+.LCFI7:
 	mv	a5,a0
 	sw	a5,-36(s0)
 	.loc 2 11 4
@@ -93,11 +89,10 @@ thread0:
 	.loc 2 13 1
 	nop
 	ld	s0,40(sp)
-	.cfi_restore 8
+.LCFI8:
 	addi	sp,sp,48
-	.cfi_def_cfa_register 2
+.LCFI9:
 	jr	ra
-	.cfi_endproc
 .LFE1:
 	.size	thread0, .-thread0
 	.align	2
@@ -106,13 +101,12 @@ thread0:
 thread1:
 .LFB2:
 	.loc 2 15 23
-	.cfi_startproc
 	addi	sp,sp,-48
-	.cfi_def_cfa_offset 48
+.LCFI10:
 	sd	s0,40(sp)
-	.cfi_offset 8, -8
+.LCFI11:
 	addi	s0,sp,48
-	.cfi_def_cfa 8, 0
+.LCFI12:
 	mv	a5,a0
 	sw	a5,-36(s0)
 .LBB3:
@@ -149,11 +143,10 @@ thread1:
 	.loc 2 21 1
 	nop
 	ld	s0,40(sp)
-	.cfi_restore 8
+.LCFI13:
 	addi	sp,sp,48
-	.cfi_def_cfa_register 2
+.LCFI14:
 	jr	ra
-	.cfi_endproc
 .LFE2:
 	.size	thread1, .-thread1
 	.align	2
@@ -162,15 +155,13 @@ thread1:
 main:
 .LFB3:
 	.loc 2 23 12
-	.cfi_startproc
 	addi	sp,sp,-32
-	.cfi_def_cfa_offset 32
+.LCFI15:
 	sd	ra,24(sp)
 	sd	s0,16(sp)
-	.cfi_offset 1, -8
-	.cfi_offset 8, -16
+.LCFI16:
 	addi	s0,sp,32
-	.cfi_def_cfa 8, 0
+.LCFI17:
 	.loc 2 25 10
 	lui	a5,%hi(thread0)
 	addi	a0,a5,%lo(thread0)
@@ -188,15 +179,147 @@ main:
 	.loc 2 28 1
 	mv	a0,a5
 	ld	ra,24(sp)
-	.cfi_restore 1
+.LCFI18:
 	ld	s0,16(sp)
-	.cfi_restore 8
+.LCFI19:
 	addi	sp,sp,32
-	.cfi_def_cfa_register 2
+.LCFI20:
 	jr	ra
-	.cfi_endproc
 .LFE3:
 	.size	main, .-main
+	.section	.debug_frame,"",@progbits
+.Lframe0:
+	.4byte	.LECIE0-.LSCIE0
+.LSCIE0:
+	.4byte	0xffffffff
+	.byte	0x3
+	.string	""
+	.byte	0x1
+	.byte	0x7c
+	.byte	0x1
+	.byte	0xc
+	.byte	0x2
+	.byte	0
+	.align	3
+.LECIE0:
+.LSFDE0:
+	.4byte	.LEFDE0-.LASFDE0
+.LASFDE0:
+	.4byte	.Lframe0
+	.8byte	.LFB0
+	.8byte	.LFE0-.LFB0
+	.byte	0x4
+	.4byte	.LCFI0-.LFB0
+	.byte	0xe
+	.byte	0x20
+	.byte	0x4
+	.4byte	.LCFI1-.LCFI0
+	.byte	0x88
+	.byte	0x2
+	.byte	0x4
+	.4byte	.LCFI2-.LCFI1
+	.byte	0xc
+	.byte	0x8
+	.byte	0
+	.byte	0x4
+	.4byte	.LCFI3-.LCFI2
+	.byte	0xc8
+	.byte	0x4
+	.4byte	.LCFI4-.LCFI3
+	.byte	0xd
+	.byte	0x2
+	.align	3
+.LEFDE0:
+.LSFDE2:
+	.4byte	.LEFDE2-.LASFDE2
+.LASFDE2:
+	.4byte	.Lframe0
+	.8byte	.LFB1
+	.8byte	.LFE1-.LFB1
+	.byte	0x4
+	.4byte	.LCFI5-.LFB1
+	.byte	0xe
+	.byte	0x30
+	.byte	0x4
+	.4byte	.LCFI6-.LCFI5
+	.byte	0x88
+	.byte	0x2
+	.byte	0x4
+	.4byte	.LCFI7-.LCFI6
+	.byte	0xc
+	.byte	0x8
+	.byte	0
+	.byte	0x4
+	.4byte	.LCFI8-.LCFI7
+	.byte	0xc8
+	.byte	0x4
+	.4byte	.LCFI9-.LCFI8
+	.byte	0xd
+	.byte	0x2
+	.align	3
+.LEFDE2:
+.LSFDE4:
+	.4byte	.LEFDE4-.LASFDE4
+.LASFDE4:
+	.4byte	.Lframe0
+	.8byte	.LFB2
+	.8byte	.LFE2-.LFB2
+	.byte	0x4
+	.4byte	.LCFI10-.LFB2
+	.byte	0xe
+	.byte	0x30
+	.byte	0x4
+	.4byte	.LCFI11-.LCFI10
+	.byte	0x88
+	.byte	0x2
+	.byte	0x4
+	.4byte	.LCFI12-.LCFI11
+	.byte	0xc
+	.byte	0x8
+	.byte	0
+	.byte	0x4
+	.4byte	.LCFI13-.LCFI12
+	.byte	0xc8
+	.byte	0x4
+	.4byte	.LCFI14-.LCFI13
+	.byte	0xd
+	.byte	0x2
+	.align	3
+.LEFDE4:
+.LSFDE6:
+	.4byte	.LEFDE6-.LASFDE6
+.LASFDE6:
+	.4byte	.Lframe0
+	.8byte	.LFB3
+	.8byte	.LFE3-.LFB3
+	.byte	0x4
+	.4byte	.LCFI15-.LFB3
+	.byte	0xe
+	.byte	0x20
+	.byte	0x4
+	.4byte	.LCFI16-.LCFI15
+	.byte	0x81
+	.byte	0x2
+	.byte	0x88
+	.byte	0x4
+	.byte	0x4
+	.4byte	.LCFI17-.LCFI16
+	.byte	0xc
+	.byte	0x8
+	.byte	0
+	.byte	0x4
+	.4byte	.LCFI18-.LCFI17
+	.byte	0xc1
+	.byte	0x4
+	.4byte	.LCFI19-.LCFI18
+	.byte	0xc8
+	.byte	0x4
+	.4byte	.LCFI20-.LCFI19
+	.byte	0xd
+	.byte	0x2
+	.align	3
+.LEFDE6:
+	.text
 .Letext0:
 	.file 3 "/usr/lib/gcc-cross/riscv64-linux-gnu/8/include/stdatomic.h"
 	.section	.debug_info,"",@progbits
@@ -778,8 +901,6 @@ main:
 	.string	"unsigned int"
 .LASF8:
 	.string	"char"
-.LASF28:
-	.string	"GNU C11 8.2.0 -march=rv64g -mabi=lp64d -g -O0 -std=c11 -ffreestanding"
 .LASF27:
 	.string	"result"
 .LASF29:
@@ -800,6 +921,8 @@ main:
 	.string	"short int"
 .LASF13:
 	.string	"long int"
+.LASF28:
+	.string	"GNU C11 8.2.0 -march=rv64g -mabi=lp64d -g -O0 -std=c11 -fno-dwarf2-cfi-asm -ffreestanding"
 .LASF9:
 	.string	"signed char"
 .LASF25:

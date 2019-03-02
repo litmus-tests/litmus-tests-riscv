@@ -10,7 +10,7 @@ ELF Header:
   Version:                           0x1
   Entry point address:               0x1010c
   Start of program headers:          64 (bytes into file)
-  Start of section headers:          3408 (bytes into file)
+  Start of section headers:          3424 (bytes into file)
   Flags:                             0x4, double-float ABI
   Size of this header:               64 (bytes)
   Size of program headers:           56 (bytes)
@@ -47,14 +47,14 @@ Section Headers:
   [11] .debug_frame      PROGBITS         0000000000000000  00000778
        0000000000000028  0000000000000000           0     0     8
   [12] .debug_str        PROGBITS         0000000000000000  000007a0
-       00000000000001c8  0000000000000001  MS       0     0     1
-  [13] .debug_loc        PROGBITS         0000000000000000  00000968
+       00000000000001dc  0000000000000001  MS       0     0     1
+  [13] .debug_loc        PROGBITS         0000000000000000  0000097c
        000000000000006c  0000000000000000           0     0     1
-  [14] .symtab           SYMTAB           0000000000000000  000009d8
+  [14] .symtab           SYMTAB           0000000000000000  000009e8
        0000000000000270  0000000000000018          15    15     8
-  [15] .strtab           STRTAB           0000000000000000  00000c48
+  [15] .strtab           STRTAB           0000000000000000  00000c58
        000000000000005c  0000000000000000           0     0     1
-  [16] .shstrtab         STRTAB           0000000000000000  00000ca4
+  [16] .shstrtab         STRTAB           0000000000000000  00000cb4
        00000000000000a7  0000000000000000           0     0     1
 Key to Flags:
   W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
@@ -120,4 +120,4 @@ No version information found in this file.
 Displaying notes found in: .note.gnu.build-id
   Owner                 Data size	Description
   GNU                  0x00000014	NT_GNU_BUILD_ID (unique build ID bitstring)
-    Build ID: 0f52f02cbff3cee9999b5be712f448322c9106d3
+    Build ID: 2b7e7133946b9ec5de0d737d4d190e3c91f20816

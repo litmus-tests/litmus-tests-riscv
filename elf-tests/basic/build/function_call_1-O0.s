@@ -2,7 +2,6 @@
 	.option nopic
 	.text
 .Ltext0:
-	.cfi_sections	.debug_frame
 	.globl	n
 	.section	.sdata,"aw"
 	.align	2
@@ -18,13 +17,12 @@ f:
 .LFB0:
 	.file 1 "function_call_1.c"
 	.loc 1 3 14
-	.cfi_startproc
 	addi	sp,sp,-48
-	.cfi_def_cfa_offset 48
+.LCFI0:
 	sd	s0,40(sp)
-	.cfi_offset 8, -8
+.LCFI1:
 	addi	s0,sp,48
-	.cfi_def_cfa 8, 0
+.LCFI2:
 	mv	a5,a0
 	sw	a5,-36(s0)
 	.loc 1 5 5
@@ -45,11 +43,10 @@ f:
 	.loc 1 8 1
 	mv	a0,a5
 	ld	s0,40(sp)
-	.cfi_restore 8
+.LCFI3:
 	addi	sp,sp,48
-	.cfi_def_cfa_register 2
+.LCFI4:
 	jr	ra
-	.cfi_endproc
 .LFE0:
 	.size	f, .-f
 	.align	2
@@ -58,15 +55,13 @@ f:
 main:
 .LFB1:
 	.loc 1 10 12
-	.cfi_startproc
 	addi	sp,sp,-32
-	.cfi_def_cfa_offset 32
+.LCFI5:
 	sd	ra,24(sp)
 	sd	s0,16(sp)
-	.cfi_offset 1, -8
-	.cfi_offset 8, -16
+.LCFI6:
 	addi	s0,sp,32
-	.cfi_def_cfa 8, 0
+.LCFI7:
 	.loc 1 12 7
 	li	a0,5
 	call	f
@@ -88,15 +83,91 @@ main:
 	.loc 1 17 1
 	mv	a0,a5
 	ld	ra,24(sp)
-	.cfi_restore 1
+.LCFI8:
 	ld	s0,16(sp)
-	.cfi_restore 8
+.LCFI9:
 	addi	sp,sp,32
-	.cfi_def_cfa_register 2
+.LCFI10:
 	jr	ra
-	.cfi_endproc
 .LFE1:
 	.size	main, .-main
+	.section	.debug_frame,"",@progbits
+.Lframe0:
+	.4byte	.LECIE0-.LSCIE0
+.LSCIE0:
+	.4byte	0xffffffff
+	.byte	0x3
+	.string	""
+	.byte	0x1
+	.byte	0x7c
+	.byte	0x1
+	.byte	0xc
+	.byte	0x2
+	.byte	0
+	.align	3
+.LECIE0:
+.LSFDE0:
+	.4byte	.LEFDE0-.LASFDE0
+.LASFDE0:
+	.4byte	.Lframe0
+	.8byte	.LFB0
+	.8byte	.LFE0-.LFB0
+	.byte	0x4
+	.4byte	.LCFI0-.LFB0
+	.byte	0xe
+	.byte	0x30
+	.byte	0x4
+	.4byte	.LCFI1-.LCFI0
+	.byte	0x88
+	.byte	0x2
+	.byte	0x4
+	.4byte	.LCFI2-.LCFI1
+	.byte	0xc
+	.byte	0x8
+	.byte	0
+	.byte	0x4
+	.4byte	.LCFI3-.LCFI2
+	.byte	0xc8
+	.byte	0x4
+	.4byte	.LCFI4-.LCFI3
+	.byte	0xd
+	.byte	0x2
+	.align	3
+.LEFDE0:
+.LSFDE2:
+	.4byte	.LEFDE2-.LASFDE2
+.LASFDE2:
+	.4byte	.Lframe0
+	.8byte	.LFB1
+	.8byte	.LFE1-.LFB1
+	.byte	0x4
+	.4byte	.LCFI5-.LFB1
+	.byte	0xe
+	.byte	0x20
+	.byte	0x4
+	.4byte	.LCFI6-.LCFI5
+	.byte	0x81
+	.byte	0x2
+	.byte	0x88
+	.byte	0x4
+	.byte	0x4
+	.4byte	.LCFI7-.LCFI6
+	.byte	0xc
+	.byte	0x8
+	.byte	0
+	.byte	0x4
+	.4byte	.LCFI8-.LCFI7
+	.byte	0xc1
+	.byte	0x4
+	.4byte	.LCFI9-.LCFI8
+	.byte	0xc8
+	.byte	0x4
+	.4byte	.LCFI10-.LCFI9
+	.byte	0xd
+	.byte	0x2
+	.align	3
+.LEFDE2:
+	.text
 .Letext0:
 	.section	.debug_info,"",@progbits
 .Ldebug_info0:
@@ -381,7 +452,7 @@ main:
 .LASF3:
 	.string	"/home/shaked/rems/litmus-tests-riscv/elf-tests/basic"
 .LASF1:
-	.string	"GNU C11 8.2.0 -march=rv64g -mabi=lp64d -g -O0 -std=c11 -ffreestanding"
+	.string	"GNU C11 8.2.0 -march=rv64g -mabi=lp64d -g -O0 -std=c11 -fno-dwarf2-cfi-asm -ffreestanding"
 .LASF0:
 	.string	"main"
 	.ident	"GCC: (Ubuntu 8.2.0-7ubuntu1) 8.2.0"

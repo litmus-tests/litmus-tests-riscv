@@ -11,14 +11,16 @@ Disassembly of section .note.gnu.build-id:
    100ee:	0000                	unimp
    100f0:	00000003          	lb	zero,0(zero) # 0 <f-0x1010c>
    100f4:	00554e47          	fmsub.s	ft8,fa0,ft5,ft0,rmm
-   100f8:	065c                	addi	a5,sp,772
-   100fa:	2249                	addiw	tp,tp,18
-   100fc:	4d09                	li	s10,2
-   100fe:	6684abf7          	0x6684abf7
-   10102:	76f0                	ld	a2,232(a3)
-   10104:	ba94e077          	0xba94e077
-   10108:	bd00                	fsd	fs0,56(a0)
-   1010a:	          	0x3a8b
+   100f8:	f301                	bnez	a4,fff8 <f-0x114>
+   100fa:	031d                	addi	t1,t1,7
+   100fc:	8418                	0x8418
+   100fe:	08f8                	addi	a4,sp,92
+   10100:	e952                	sd	s4,144(sp)
+   10102:	f6fa                	sd	t5,360(sp)
+   10104:	1d8c                	addi	a1,sp,752
+   10106:	86b5                	srai	a3,a3,0xd
+   10108:	6172                	ld	sp,280(sp)
+   1010a:	a68c                	fsd	fa1,8(a3)
 
 Disassembly of section .text:
 
@@ -146,7 +148,7 @@ Disassembly of section .debug_info:
   42:	0504                	addi	s1,sp,640
   44:	6e69                	lui	t3,0x1a
   46:	0074                	addi	a3,sp,12
-  48:	8d04                	0x8d04
+  48:	a104                	fsd	fs1,0(a0)
   4a:	0000                	unimp
   4c:	0100                	addi	s0,sp,128
   4e:	050a                	slli	a0,a0,0x2
@@ -352,11 +354,10 @@ Disassembly of section .debug_frame:
    2:	0000                	unimp
    4:	ffff                	0xffff
    6:	ffff                	0xffff
-   8:	0001                	nop
-   a:	7c01                	lui	s8,0xfffe0
-   c:	0d01                	addi	s10,s10,0
+   8:	7c010003          	lb	zero,1984(sp)
+   c:	0c01                	addi	s8,s8,0
    e:	0002                	c.slli64	zero
-  10:	0024                	addi	s1,sp,8
+  10:	003c                	addi	a5,sp,8
   12:	0000                	unimp
   14:	0000                	unimp
   16:	0000                	unimp
@@ -368,37 +369,61 @@ Disassembly of section .debug_frame:
   22:	0000                	unimp
   24:	0000                	unimp
   26:	0000                	unimp
-  28:	0e44                	addi	s1,sp,788
-  2a:	4430                	lw	a2,72(s0)
-  2c:	0288                	addi	a0,sp,320
-  2e:	0c44                	addi	s1,sp,532
-  30:	0008                	0x8
-  32:	c87c                	sw	a5,84(s0)
-  34:	0d44                	addi	s1,sp,660
-  36:	0002                	c.slli64	zero
-  38:	002c                	addi	a1,sp,8
-  3a:	0000                	unimp
-  3c:	0000                	unimp
-  3e:	0000                	unimp
-  40:	015c                	addi	a5,sp,132
-  42:	0001                	nop
-  44:	0000                	unimp
+  28:	0404                	addi	s1,sp,512
+  2a:	0000                	unimp
+  2c:	0e00                	addi	s0,sp,784
+  2e:	0430                	addi	a2,sp,520
+  30:	0004                	0x4
+  32:	0000                	unimp
+  34:	0288                	addi	a0,sp,320
+  36:	0404                	addi	s1,sp,512
+  38:	0000                	unimp
+  3a:	0c00                	addi	s0,sp,528
+  3c:	0008                	0x8
+  3e:	3c04                	fld	fs1,56(s0)
+  40:	0000                	unimp
+  42:	c800                	sw	s0,16(s0)
+  44:	0404                	addi	s1,sp,512
   46:	0000                	unimp
-  48:	0058                	addi	a4,sp,4
-  4a:	0000                	unimp
+  48:	0d00                	addi	s0,sp,656
+  4a:	0002                	c.slli64	zero
   4c:	0000                	unimp
   4e:	0000                	unimp
-  50:	0e44                	addi	s1,sp,788
-  52:	4820                	lw	s0,80(s0)
-  54:	0281                	addi	t0,t0,0
-  56:	0488                	addi	a0,sp,576
-  58:	0c44                	addi	s1,sp,532
-  5a:	0008                	0x8
-  5c:	3c02                	fld	fs8,32(sp)
-  5e:	44c1                	li	s1,16
-  60:	44c8                	lw	a0,12(s1)
-  62:	020d                	addi	tp,tp,3
+  50:	0044                	addi	s1,sp,4
+  52:	0000                	unimp
+  54:	0000                	unimp
+  56:	0000                	unimp
+  58:	015c                	addi	a5,sp,132
+  5a:	0001                	nop
+  5c:	0000                	unimp
+  5e:	0000                	unimp
+  60:	0058                	addi	a4,sp,4
+  62:	0000                	unimp
   64:	0000                	unimp
+  66:	0000                	unimp
+  68:	0404                	addi	s1,sp,512
+  6a:	0000                	unimp
+  6c:	0e00                	addi	s0,sp,784
+  6e:	0420                	addi	s0,sp,520
+  70:	0008                	0x8
+  72:	0000                	unimp
+  74:	0281                	addi	t0,t0,0
+  76:	0488                	addi	a0,sp,576
+  78:	0404                	addi	s1,sp,512
+  7a:	0000                	unimp
+  7c:	0c00                	addi	s0,sp,528
+  7e:	0008                	0x8
+  80:	3c04                	fld	fs1,56(s0)
+  82:	0000                	unimp
+  84:	c100                	sw	s0,0(a0)
+  86:	0404                	addi	s1,sp,512
+  88:	0000                	unimp
+  8a:	c800                	sw	s0,16(s0)
+  8c:	0404                	addi	s1,sp,512
+  8e:	0000                	unimp
+  90:	0d00                	addi	s0,sp,656
+  92:	0002                	c.slli64	zero
+  94:	0000                	unimp
 	...
 
 Disassembly of section .debug_str:
@@ -456,11 +481,19 @@ Disassembly of section .debug_str:
   76:	3d647473          	csrrci	s0,0x3d6,8
   7a:	20313163          	0x20313163
   7e:	662d                	lui	a2,0xb
-  80:	7266                	ld	tp,120(sp)
-  82:	6565                	lui	a0,0x19
-  84:	6e617473          	csrrci	s0,0x6e6,2
-  88:	6964                	ld	s1,208(a0)
-  8a:	676e                	ld	a4,216(sp)
-  8c:	6d00                	ld	s0,24(a0)
-  8e:	6961                	lui	s2,0x18
-  90:	006e                	c.slli	zero,0x1b
+  80:	6f6e                	ld	t5,216(sp)
+  82:	642d                	lui	s0,0xb
+  84:	66726177          	0x66726177
+  88:	2d32                	fld	fs10,264(sp)
+  8a:	2d696663          	bltu	s2,s6,356 <f-0xfdb6>
+  8e:	7361                	lui	t1,0xffff8
+  90:	206d                	0x206d
+  92:	662d                	lui	a2,0xb
+  94:	7266                	ld	tp,120(sp)
+  96:	6565                	lui	a0,0x19
+  98:	6e617473          	csrrci	s0,0x6e6,2
+  9c:	6964                	ld	s1,208(a0)
+  9e:	676e                	ld	a4,216(sp)
+  a0:	6d00                	ld	s0,24(a0)
+  a2:	6961                	lui	s2,0x18
+  a4:	006e                	c.slli	zero,0x1b

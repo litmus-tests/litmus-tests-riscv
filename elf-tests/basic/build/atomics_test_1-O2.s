@@ -2,7 +2,6 @@
 	.option nopic
 	.text
 .Ltext0:
-	.cfi_sections	.debug_frame
 	.section	.text.startup,"ax",@progbits
 	.align	2
 	.globl	main
@@ -11,7 +10,6 @@ main:
 .LFB0:
 	.file 1 "atomics_test_1.c"
 	.loc 1 9 12
-	.cfi_startproc
 	.loc 1 10 3
 	.loc 1 10 4 is_stmt 0
 	lui	a5,%hi(n)
@@ -118,7 +116,6 @@ main:
 	.loc 1 30 1 is_stmt 0
 	li	a0,1
 	ret
-	.cfi_endproc
 .LFE0:
 	.size	main, .-main
 	.globl	n
@@ -138,6 +135,29 @@ n:
 	.size	x, 4
 x:
 	.word	1
+	.section	.debug_frame,"",@progbits
+.Lframe0:
+	.4byte	.LECIE0-.LSCIE0
+.LSCIE0:
+	.4byte	0xffffffff
+	.byte	0x3
+	.string	""
+	.byte	0x1
+	.byte	0x7c
+	.byte	0x1
+	.byte	0xc
+	.byte	0x2
+	.byte	0
+	.align	3
+.LECIE0:
+.LSFDE0:
+	.4byte	.LEFDE0-.LASFDE0
+.LASFDE0:
+	.4byte	.Lframe0
+	.8byte	.LFB0
+	.8byte	.LFE0-.LFB0
+	.align	3
+.LEFDE0:
 	.text
 .Letext0:
 	.file 2 "/usr/lib/gcc-cross/riscv64-linux-gnu/8/include/stdatomic.h"
@@ -683,8 +703,6 @@ x:
 	.section	.debug_str,"MS",@progbits,1
 .LASF4:
 	.string	"memory_order_acq_rel"
-.LASF24:
-	.string	"GNU C11 8.2.0 -march=rv64g -mabi=lp64d -g -O2 -std=c11 -ffreestanding"
 .LASF17:
 	.string	"y_relaxed"
 .LASF18:
@@ -693,8 +711,8 @@ x:
 	.string	"__atomic_store_ptr"
 .LASF16:
 	.string	"long long unsigned int"
-.LASF10:
-	.string	"unsigned char"
+.LASF24:
+	.string	"GNU C11 8.2.0 -march=rv64g -mabi=lp64d -g -O2 -std=c11 -fno-dwarf2-cfi-asm -ffreestanding"
 .LASF25:
 	.string	"atomics_test_1.c"
 .LASF14:
@@ -703,6 +721,8 @@ x:
 	.string	"short unsigned int"
 .LASF19:
 	.string	"y_sc"
+.LASF10:
+	.string	"unsigned char"
 .LASF2:
 	.string	"memory_order_acquire"
 .LASF5:

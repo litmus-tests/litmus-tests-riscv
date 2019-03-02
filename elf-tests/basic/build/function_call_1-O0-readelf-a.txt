@@ -10,7 +10,7 @@ ELF Header:
   Version:                           0x1
   Entry point address:               0x1015c
   Start of program headers:          64 (bytes into file)
-  Start of section headers:          2016 (bytes into file)
+  Start of section headers:          2080 (bytes into file)
   Flags:                             0x4, double-float ABI
   Size of this header:               64 (bytes)
   Size of program headers:           56 (bytes)
@@ -41,14 +41,14 @@ Section Headers:
   [ 8] .debug_line       PROGBITS         0000000000000000  00000384
        000000000000009e  0000000000000000           0     0     1
   [ 9] .debug_frame      PROGBITS         0000000000000000  00000428
-       0000000000000068  0000000000000000           0     0     8
-  [10] .debug_str        PROGBITS         0000000000000000  00000490
-       0000000000000092  0000000000000001  MS       0     0     1
-  [11] .symtab           SYMTAB           0000000000000000  00000528
+       0000000000000098  0000000000000000           0     0     8
+  [10] .debug_str        PROGBITS         0000000000000000  000004c0
+       00000000000000a6  0000000000000001  MS       0     0     1
+  [11] .symtab           SYMTAB           0000000000000000  00000568
        00000000000001e0  0000000000000018          12    12     8
-  [12] .strtab           STRTAB           0000000000000000  00000708
+  [12] .strtab           STRTAB           0000000000000000  00000748
        0000000000000044  0000000000000000           0     0     1
-  [13] .shstrtab         STRTAB           0000000000000000  0000074c
+  [13] .shstrtab         STRTAB           0000000000000000  0000078c
        0000000000000091  0000000000000000           0     0     1
 Key to Flags:
   W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
@@ -108,4 +108,4 @@ No version information found in this file.
 Displaying notes found in: .note.gnu.build-id
   Owner                 Data size	Description
   GNU                  0x00000014	NT_GNU_BUILD_ID (unique build ID bitstring)
-    Build ID: 5c064922094df7ab8466f07677e094ba00bd8b3a
+    Build ID: 01f31d031884f80852e9faf68c1db58672618ca6

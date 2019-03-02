@@ -2,7 +2,6 @@
 	.option nopic
 	.text
 .Ltext0:
-	.cfi_sections	.debug_frame
 	.align	2
 	.globl	main
 	.type	main, @function
@@ -10,7 +9,6 @@ main:
 .LFB0:
 	.file 1 "loop.c"
 	.loc 1 2 12
-	.cfi_startproc
 	.loc 1 3 3
 .LVL0:
 	.loc 1 4 3
@@ -25,7 +23,6 @@ main:
 	.loc 1 7 1 is_stmt 0
 	li	a0,1
 	ret
-	.cfi_endproc
 .LFE0:
 	.size	main, .-main
 	.globl	t
@@ -35,6 +32,29 @@ main:
 	.size	t, 4
 t:
 	.zero	4
+	.section	.debug_frame,"",@progbits
+.Lframe0:
+	.4byte	.LECIE0-.LSCIE0
+.LSCIE0:
+	.4byte	0xffffffff
+	.byte	0x3
+	.string	""
+	.byte	0x1
+	.byte	0x7c
+	.byte	0x1
+	.byte	0xc
+	.byte	0x2
+	.byte	0
+	.align	3
+.LECIE0:
+.LSFDE0:
+	.4byte	.LEFDE0-.LASFDE0
+.LASFDE0:
+	.4byte	.Lframe0
+	.8byte	.LFB0
+	.8byte	.LFE0-.LFB0
+	.align	3
+.LEFDE0:
 	.text
 .Letext0:
 	.section	.debug_info,"",@progbits
@@ -192,12 +212,12 @@ t:
 	.section	.debug_line,"",@progbits
 .Ldebug_line0:
 	.section	.debug_str,"MS",@progbits,1
-.LASF0:
-	.string	"GNU C11 8.2.0 -march=rv64g -mabi=lp64d -g -O1 -std=c11 -ffreestanding"
 .LASF2:
 	.string	"/home/shaked/rems/litmus-tests-riscv/elf-tests/basic"
 .LASF1:
 	.string	"loop.c"
+.LASF0:
+	.string	"GNU C11 8.2.0 -march=rv64g -mabi=lp64d -g -O1 -std=c11 -fno-dwarf2-cfi-asm -ffreestanding"
 .LASF3:
 	.string	"main"
 	.ident	"GCC: (Ubuntu 8.2.0-7ubuntu1) 8.2.0"

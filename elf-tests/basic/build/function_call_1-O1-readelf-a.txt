@@ -10,7 +10,7 @@ ELF Header:
   Version:                           0x1
   Entry point address:               0x10124
   Start of program headers:          64 (bytes into file)
-  Start of section headers:          2184 (bytes into file)
+  Start of section headers:          2216 (bytes into file)
   Flags:                             0x4, double-float ABI
   Size of this header:               64 (bytes)
   Size of program headers:           56 (bytes)
@@ -41,16 +41,16 @@ Section Headers:
   [ 8] .debug_line       PROGBITS         0000000000000000  00000391
        00000000000000c7  0000000000000000           0     0     1
   [ 9] .debug_frame      PROGBITS         0000000000000000  00000458
-       0000000000000050  0000000000000000           0     0     8
-  [10] .debug_str        PROGBITS         0000000000000000  000004a8
-       0000000000000092  0000000000000001  MS       0     0     1
-  [11] .debug_loc        PROGBITS         0000000000000000  0000053a
+       0000000000000060  0000000000000000           0     0     8
+  [10] .debug_str        PROGBITS         0000000000000000  000004b8
+       00000000000000a6  0000000000000001  MS       0     0     1
+  [11] .debug_loc        PROGBITS         0000000000000000  0000055e
        0000000000000072  0000000000000000           0     0     1
-  [12] .symtab           SYMTAB           0000000000000000  000005b0
+  [12] .symtab           SYMTAB           0000000000000000  000005d0
        00000000000001f8  0000000000000018          13    13     8
-  [13] .strtab           STRTAB           0000000000000000  000007a8
+  [13] .strtab           STRTAB           0000000000000000  000007c8
        0000000000000044  0000000000000000           0     0     1
-  [14] .shstrtab         STRTAB           0000000000000000  000007ec
+  [14] .shstrtab         STRTAB           0000000000000000  0000080c
        000000000000009c  0000000000000000           0     0     1
 Key to Flags:
   W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
@@ -111,4 +111,4 @@ No version information found in this file.
 Displaying notes found in: .note.gnu.build-id
   Owner                 Data size	Description
   GNU                  0x00000014	NT_GNU_BUILD_ID (unique build ID bitstring)
-    Build ID: cb2ae9d5c0618145c15c91f8f3c55b1cc4eb3447
+    Build ID: 02dc6b9a5abeb8242232480714ac1afd1f13650c
