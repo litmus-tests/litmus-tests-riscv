@@ -93,7 +93,7 @@ run the tests (the target machine), you will need another machine, not
 necessarily RISC-V, on which they are available (the host machine).
 
 The following sections explain how to run the litmus tests in three
-scenarios: (**NOTE:** we have only tests the instructions in the third
+scenarios: (**NOTE:** we have only tested the instructions in the third
 scenario. If you need help please contact us.)
 
 1. Building and running on the same (RISC-V) machine: the target
@@ -135,7 +135,7 @@ of observing the full range of behaviours.  The first batch is
 relatively quick (few minutes).  The results from this batch will be
 saved in the file run.test.log.  The following batches will take
 longer time to complete (a few hours each one). The results from each
-of those batches will be saved in run.<n>.log, where <n> is the batch
+of those batches will be saved in run.\<n\>.log, where \<n\> is the batch
 number.
 
 Building and running on the same (RISC-V) machine
@@ -144,7 +144,7 @@ Here we assume the litmus-tests-riscv repository is checked out on
 the RISC-V machine you intend to run the tests on and the machine has
 the diy tool suite, make and gcc installed.
 
-To generate the C program, build it and run it do
+To generate the C program, build it, and run it, do
 `make run-hw-tests CORES=<n> [GCC=<gcc>] [-j <m>]`
 where `<n>` is the number of hardware threads the machine can run
 **(NOTE: this will probably take a few days to complete, though the first log file should be produced within a few minutes)**.
