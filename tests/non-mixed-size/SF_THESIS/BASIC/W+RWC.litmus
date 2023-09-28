@@ -1,0 +1,20 @@
+RISCV W+RWC
+"PodWW Rfe PodRR Fre PodWR Fre"
+Cycle=Rfe PodRR Fre PodWR Fre PodWW
+Relax=
+Safe=Rfe Fre PodWW PodWR PodRR
+Generator=diy7 (version 7.55)
+Prefetch=0:x=F,0:y=W,1:y=F,1:z=T,2:z=F,2:x=T
+Com=Rf Fr Fr
+Orig=PodWW Rfe PodRR Fre PodWR Fre
+{
+uint64_t z; uint64_t y; uint64_t x; uint64_t 2:x7; uint64_t 1:x7; uint64_t 1:x5;
+
+0:x5=1; 0:x6=x; 0:x7=y;
+1:x6=y; 1:x8=z;
+2:x5=1; 2:x6=z; 2:x8=x;
+}
+ P0          | P1          | P2          ;
+ sd x5,0(x6) | ld x5,0(x6) | sd x5,0(x6) ;
+ sd x5,0(x7) | ld x7,0(x8) | ld x7,0(x8) ;
+exists (1:x5=1 /\ 1:x7=0 /\ 2:x7=0)

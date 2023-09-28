@@ -1,0 +1,18 @@
+RISCV S+poss
+"PosWW Rfe PosRW Wse"
+Cycle=Rfe PosRW Wse PosWW
+Relax=
+Safe=Rfe Wse PosWW PosRW
+Generator=diy7 (version 7.55)
+Com=Rf Ws
+Orig=PosWW Rfe PosRW Wse
+{
+uint64_t x; uint64_t 1:x5;
+
+0:x5=1; 0:x6=x; 0:x7=2;
+1:x6=x; 1:x7=3;
+}
+ P0          | P1          ;
+ sd x5,0(x6) | ld x5,0(x6) ;
+ sd x7,0(x6) | sd x7,0(x6) ;
+exists (not (x=3 /\ (1:x5=2 \/ 1:x5=1 \/ 1:x5=0) \/ x=2 /\ (1:x5=0 \/ 1:x5=1)))

@@ -1,0 +1,27 @@
+RISCV MP+fence.rw.rw+poxx
+"Fence.rw.rwdWW RfePX PodRRXX FreXP"
+Generator=diyone7 (version 7.55)
+Prefetch=0:x=F,0:y=W,1:y=F,1:x=T
+Com=Rf Fr
+Orig=Fence.rw.rwdWW RfePX PodRRXX FreXP
+{
+uint64_t y; uint64_t x; uint64_t ok11; uint64_t ok10; uint64_t ok; uint64_t 1:x9; uint64_t 1:x6;
+ ok=1;
+0:x5=1; 0:x6=x; 0:x7=y;
+1:x5=y; 1:x8=x; 1:x10=0; 1:x11=ok;
+}
+ P0          | P1               ;
+ sd x5,0(x6) | lr.d x6,0(x5)    ;
+ fence rw,rw | sc.d x7,x6,0(x5) ;
+ sd x5,0(x7) | bne x7,x0,Fail10 ;
+             | lr.d x9,0(x8)    ;
+             | sc.d x7,x9,0(x8) ;
+             | bne x7,x0,Fail11 ;
+             | j Exit11         ;
+             | Fail11:          ;
+             | j Exit12         ;
+             | Fail12:          ;
+             | sd x10,0(x11)    ;
+             | Exit11:          ;
+             | Exit12:          ;
+exists (ok=1 /\ x=1 /\ y=1 /\ 1:x6=1 /\ 1:x9=0 /\ ok11=1 /\ ok10=1)

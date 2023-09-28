@@ -1,0 +1,27 @@
+RISCV MP+poxx+addr
+"PodWWXX RfeXP DpAddrdR FrePX"
+Generator=diyone7 (version 7.55)
+Prefetch=0:x=F,0:y=W,1:y=F,1:x=T
+Com=Rf Fr
+Orig=PodWWXX RfeXP DpAddrdR FrePX
+{
+uint64_t y; uint64_t x; uint64_t ok01; uint64_t ok00; uint64_t ok; uint64_t 1:x8; uint64_t 1:x5; uint64_t 0:x10; uint64_t 0:x7;
+ ok=1;
+0:x5=x; 0:x6=1; 0:x9=y; 0:x11=0; 0:x12=ok;
+1:x6=y; 1:x9=x;
+}
+ P0               | P1            ;
+ lr.d x7,0(x5)    | ld x5,0(x6)   ;
+ sc.d x8,x6,0(x5) | xor x7,x5,x5  ;
+ bne x8,x0,Fail00 | add x10,x9,x7 ;
+ lr.d x10,0(x9)   | ld x8,0(x10)  ;
+ sc.d x8,x6,0(x9) |               ;
+ bne x8,x0,Fail01 |               ;
+ j Exit01         |               ;
+ Fail01:          |               ;
+ j Exit02         |               ;
+ Fail02:          |               ;
+ sd x11,0(x12)    |               ;
+ Exit01:          |               ;
+ Exit02:          |               ;
+exists (ok=1 /\ x=1 /\ y=1 /\ 0:x7=0 /\ 0:x10=0 /\ 1:x5=1 /\ 1:x8=0 /\ ok01=1 /\ ok00=1)

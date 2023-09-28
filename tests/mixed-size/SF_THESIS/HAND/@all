@@ -1,0 +1,14 @@
+LB+data+pod-rfi-pos-data+MIX1.litmus
+MIX1.litmus
+MP+fence.rw.rw+ctrl-rfi-si-addr.litmus
+MP+fence.rw.rw+ctrl-rfi-si-addr+VAR1.litmus
+MP+fence.rw.rw+ctrl-si-rfi-addr.litmus
+MP+fence.rw.rw+pos-si1.litmus
+MP+fence.rw.rw+si1.litmus
+MP+fence.rw.rw+si.litmus
+MP+fence.rw.rw+si-pos-addr.litmus
+MP+si1+fence.rw.rw.litmus
+MP+si+fence.rw.rw.litmus
+MP+sis.litmus
+S+fence.rw.rw+si-pos-addr.litmus
+WRR+2W+sis.litmus

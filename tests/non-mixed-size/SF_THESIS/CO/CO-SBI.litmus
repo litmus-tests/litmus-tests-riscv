@@ -1,0 +1,17 @@
+RISCV CO-SBI
+"Rfi PosRR Fre Rfi PosRR Fre"
+Generator=diyone7 (version 7.55)
+Com=Fr Fr
+Orig=Rfi PosRR Fre Rfi PosRR Fre
+{
+uint64_t x; uint64_t 1:x8; uint64_t 1:x7; uint64_t 0:x8; uint64_t 0:x7;
+
+0:x5=1; 0:x6=x;
+1:x5=2; 1:x6=x;
+}
+ P0          | P1          ;
+ sd x5,0(x6) | sd x5,0(x6) ;
+ ld x7,0(x6) | ld x7,0(x6) ;
+ ld x8,0(x6) | ld x8,0(x6) ;
+forall
+((x=2 /\ (1:x8=2 /\ (1:x7=2 /\ ((0:x8=2 /\ (0:x7=2 \/ 0:x7=1)) \/ (0:x8=1 /\ 0:x7=1))))) \/ (x=1 /\ (0:x8=1 /\ (0:x7=1 /\ ((1:x8=2 /\ 1:x7=2) \/ (1:x8=1 /\ (1:x7=2 \/ 1:x7=1)))))))

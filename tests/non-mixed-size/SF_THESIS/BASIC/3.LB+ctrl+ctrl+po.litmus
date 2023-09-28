@@ -1,0 +1,22 @@
+RISCV 3.LB+ctrl+ctrl+po
+"DpCtrldW Rfe DpCtrldW Rfe PodRW Rfe"
+Cycle=Rfe PodRW Rfe DpCtrldW Rfe DpCtrldW
+Relax=
+Safe=Rfe PodRW DpCtrldW
+Generator=diy7 (version 7.55)
+Prefetch=0:x=F,0:y=W,1:y=F,1:z=W,2:z=F,2:x=W
+Com=Rf Rf Rf
+Orig=DpCtrldW Rfe DpCtrldW Rfe PodRW Rfe
+{
+uint64_t z; uint64_t y; uint64_t x; uint64_t 2:x5; uint64_t 1:x5; uint64_t 0:x5;
+
+0:x6=x; 0:x7=1; 0:x8=y;
+1:x6=y; 1:x7=1; 1:x8=z;
+2:x6=z; 2:x7=1; 2:x8=x;
+}
+ P0             | P1             | P2          ;
+ ld x5,0(x6)    | ld x5,0(x6)    | ld x5,0(x6) ;
+ bne x5,x0,LC00 | bne x5,x0,LC01 | sd x7,0(x8) ;
+ LC00:          | LC01:          |             ;
+ sd x7,0(x8)    | sd x7,0(x8)    |             ;
+exists (0:x5=1 /\ 1:x5=1 /\ 2:x5=1)

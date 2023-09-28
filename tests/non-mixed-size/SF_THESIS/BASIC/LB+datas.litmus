@@ -1,0 +1,21 @@
+RISCV LB+datas
+"DpDatadW Rfe DpDatadW Rfe"
+Cycle=Rfe DpDatadW Rfe DpDatadW
+Relax=
+Safe=Rfe DpDatadW
+Generator=diy7 (version 7.55)
+Prefetch=0:x=F,0:y=W,1:y=F,1:x=W
+Com=Rf Rf
+Orig=DpDatadW Rfe DpDatadW Rfe
+{
+uint64_t y; uint64_t x; uint64_t 1:x5; uint64_t 0:x5;
+
+0:x6=x; 0:x8=y;
+1:x6=y; 1:x8=x;
+}
+ P0           | P1           ;
+ ld x5,0(x6)  | ld x5,0(x6)  ;
+ xor x7,x5,x5 | xor x7,x5,x5 ;
+ ori x7,x7,1  | ori x7,x7,1  ;
+ sd x7,0(x8)  | sd x7,0(x8)  ;
+exists (0:x5=1 /\ 1:x5=1)

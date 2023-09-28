@@ -1,0 +1,14 @@
+RISCV WRR+2W+sis
+{
+uint16_t x;
+0:x1=x; 1:x1=x; 2:x1=x;
+0:x2=0x20;
+2:x2=0x1110;
+}
+ P0                                | P1                                   | P2                                   ;
+ sb x2,0(x1) (* W x[0] = 0x__20 *) | lh x2,0(x1) (* R x[0..1] = 0x0020 *) | sh x2,0(x1) (* W x[0..1] = 0x1110 *) ;
+                                   | lh x3,0(x1) (* R x[0..1] = 0x1120 *) |                                      ;
+                                     (* The second load is not needed, it
+                                        is just to show the coherence order
+                                        more explicitly. *)
+exists (x=0x1120 /\ 1:x2=0x0020 /\ 1:x3=0x1120)

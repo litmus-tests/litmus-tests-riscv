@@ -1,0 +1,18 @@
+RISCV MP+fence.rw.rw+ctrl-si-rfi-addr
+"based on: Fence.rw.rwdWW Rfe DpCtrldW Rfi DpAddrdR Fre"
+{
+uint64_t z; uint64_t y; uint64_t x; uint64_t 1:x11; uint64_t 1:x9; uint64_t 1:x5;
+
+0:x5=1; 0:x6=x; 0:x7=y;
+1:x6=y; 1:x7=1; 1:x8=z; 1:x12=x;
+}
+ P0          | P1              ;
+ sd x5,0(x6) | ld x5,0(x6)     ;
+ fence rw,rw | bne x5,x0,LC00  ;
+ sd x5,0(x7) | LC00:           ;
+             | sh x7,0(x8)     ;
+             | lb x9,0(x8)     ;
+             | xor x10,x9,x9   ;
+             | add x13,x12,x10 ;
+             | ld x11,0(x13)   ;
+exists (1:x5=1 /\ 1:x9=1 /\ 1:x11=0)

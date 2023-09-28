@@ -1,0 +1,22 @@
+RISCV S+fence.rw.rw+addr-pos-addr
+"Fence.rw.rwdWW Rfe DpAddrdR PosRR DpAddrdW Wse"
+Generator=diyone7 (version 7.55)
+Prefetch=0:x=F,0:y=W,1:y=F,1:x=W
+Com=Rf Ws
+Orig=Fence.rw.rwdWW Rfe DpAddrdR PosRR DpAddrdW Wse
+{
+uint64_t z; uint64_t y; uint64_t x; uint64_t 1:x5;
+
+0:x5=2; 0:x6=x; 0:x7=1; 0:x8=y;
+1:x6=y; 1:x9=z; 1:x13=1; 1:x14=x;
+}
+ P0          | P1              ;
+ sd x5,0(x6) | ld x5,0(x6)     ;
+ fence rw,rw | xor x7,x5,x5    ;
+ sd x7,0(x8) | add x10,x9,x7   ;
+             | ld x8,0(x10)    ;
+             | ld x11,0(x9)    ;
+             | xor x12,x11,x11 ;
+             | add x15,x14,x12 ;
+             | sd x13,0(x15)   ;
+exists (x=2 /\ 1:x5=1)

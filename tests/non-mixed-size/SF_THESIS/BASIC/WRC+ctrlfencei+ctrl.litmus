@@ -1,0 +1,23 @@
+RISCV WRC+ctrlfencei+ctrl
+"Rfe DpCtrlFenceIdW Rfe DpCtrldR Fre"
+Cycle=Rfe DpCtrldR Fre Rfe DpCtrlFenceIdW
+Relax=
+Safe=Rfe Fre DpCtrldR DpCtrlFenceIdW
+Generator=diy7 (version 7.55)
+Prefetch=1:x=F,1:y=W,2:y=F,2:x=T
+Com=Rf Rf Fr
+Orig=Rfe DpCtrlFenceIdW Rfe DpCtrldR Fre
+{
+uint64_t y; uint64_t x; uint64_t 2:x7; uint64_t 2:x5; uint64_t 1:x5;
+
+0:x5=1; 0:x6=x;
+1:x6=x; 1:x7=1; 1:x8=y;
+2:x6=y; 2:x8=x;
+}
+ P0          | P1             | P2             ;
+ sd x5,0(x6) | ld x5,0(x6)    | ld x5,0(x6)    ;
+             | bne x5,x0,LC00 | bne x5,x0,LC01 ;
+             | LC00:          | LC01:          ;
+             | fence.i        | ld x7,0(x8)    ;
+             | sd x7,0(x8)    |                ;
+exists (1:x5=1 /\ 2:x5=1 /\ 2:x7=0)

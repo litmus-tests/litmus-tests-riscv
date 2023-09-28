@@ -1,0 +1,17 @@
+RISCV CoRW1
+"PosRW Rfe"
+Cycle=Rfe PosRW
+Relax=
+Safe=Rfe PosRW
+Generator=diy7 (version 7.55)
+Com=Rf
+Orig=PosRW Rfe
+{
+uint64_t x; uint64_t 0:x5;
+
+0:x6=x; 0:x7=1;
+}
+ P0          ;
+ ld x5,0(x6) ;
+ sd x7,0(x6) ;
+exists (not (0:x5=0 /\ x=1))

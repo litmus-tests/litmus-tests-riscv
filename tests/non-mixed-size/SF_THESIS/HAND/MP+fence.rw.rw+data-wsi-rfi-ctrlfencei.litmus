@@ -1,0 +1,24 @@
+RISCV MP+fence.rw.rw+data-wsi-rfi-ctrlfencei
+"Fence.rw.rwdWW Rfe DpDatadW Wsi Rfi DpCtrlFenceIdR Fre"
+Generator=diyone7 (version 7.55)
+Prefetch=0:x=F,0:y=W,1:y=F,1:x=T
+Com=Rf Fr
+Orig=Fence.rw.rwdWW Rfe DpDatadW Wsi Rfi DpCtrlFenceIdR Fre
+{
+uint64_t z; uint64_t y; uint64_t x; uint64_t 1:x11; uint64_t 1:x10; uint64_t 1:x5;
+
+0:x5=1; 0:x6=x; 0:x7=y;
+1:x6=y; 1:x8=z; 1:x9=2; 1:x12=x;
+}
+ P0          | P1              ;
+ sd x5,0(x6) | ld x5,0(x6)     ;
+ fence rw,rw | xor x7,x5,x5    ;
+ sd x5,0(x7) | ori x7,x7,1     ;
+             | sd x7,0(x8)     ;
+             | sd x9,0(x8)     ;
+             | ld x10,0(x8)    ;
+             | bne x10,x0,LC00 ;
+             | LC00:           ;
+             | fence.i         ;
+             | ld x11,0(x12)   ;
+exists (z=2 /\ 1:x5=1 /\ 1:x10=2 /\ 1:x11=0)

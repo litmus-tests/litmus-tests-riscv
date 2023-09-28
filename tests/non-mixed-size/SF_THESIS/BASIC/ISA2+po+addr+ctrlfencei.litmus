@@ -1,0 +1,23 @@
+RISCV ISA2+po+addr+ctrlfencei
+"PodWW Rfe DpAddrdW Rfe DpCtrlFenceIdR Fre"
+Cycle=Rfe DpAddrdW Rfe DpCtrlFenceIdR Fre PodWW
+Relax=
+Safe=Rfe Fre PodWW DpAddrdW DpCtrlFenceIdR
+Generator=diy7 (version 7.55)
+Prefetch=0:x=F,0:y=W,1:y=F,1:z=W,2:z=F,2:x=T
+Com=Rf Rf Fr
+Orig=PodWW Rfe DpAddrdW Rfe DpCtrlFenceIdR Fre
+{
+uint64_t z; uint64_t y; uint64_t x; uint64_t 2:x7; uint64_t 2:x5; uint64_t 1:x5;
+
+0:x5=1; 0:x6=x; 0:x7=y;
+1:x6=y; 1:x8=1; 1:x9=z;
+2:x6=z; 2:x8=x;
+}
+ P0          | P1            | P2             ;
+ sd x5,0(x6) | ld x5,0(x6)   | ld x5,0(x6)    ;
+ sd x5,0(x7) | xor x7,x5,x5  | bne x5,x0,LC00 ;
+             | add x10,x9,x7 | LC00:          ;
+             | sd x8,0(x10)  | fence.i        ;
+             |               | ld x7,0(x8)    ;
+exists (1:x5=1 /\ 2:x5=1 /\ 2:x7=0)

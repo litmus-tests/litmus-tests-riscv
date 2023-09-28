@@ -1,0 +1,21 @@
+RISCV S+po+addr
+"PodWW Rfe DpAddrdW Wse"
+Cycle=Rfe DpAddrdW Wse PodWW
+Relax=
+Safe=Rfe Wse PodWW DpAddrdW
+Generator=diy7 (version 7.55)
+Prefetch=0:x=F,0:y=W,1:y=F,1:x=W
+Com=Rf Ws
+Orig=PodWW Rfe DpAddrdW Wse
+{
+uint64_t y; uint64_t x; uint64_t 1:x5;
+
+0:x5=2; 0:x6=x; 0:x7=1; 0:x8=y;
+1:x6=y; 1:x8=1; 1:x9=x;
+}
+ P0          | P1            ;
+ sd x5,0(x6) | ld x5,0(x6)   ;
+ sd x7,0(x8) | xor x7,x5,x5  ;
+             | add x10,x9,x7 ;
+             | sd x8,0(x10)  ;
+exists (x=2 /\ 1:x5=1)

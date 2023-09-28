@@ -1,0 +1,19 @@
+RISCV LB+fence.rw.rw+data-po
+"Fence.rw.rwdRW Rfe DpDatadW PodWW Rfe"
+Generator=diyone7 (version 7.55)
+Prefetch=0:x=F,0:y=W,1:y=F,1:x=W
+Com=Rf Rf
+Orig=Fence.rw.rwdRW Rfe DpDatadW PodWW Rfe
+{
+uint64_t z; uint64_t y; uint64_t x; uint64_t 1:x5; uint64_t 0:x5;
+
+0:x6=x; 0:x7=1; 0:x8=y;
+1:x6=y; 1:x8=z; 1:x9=1; 1:x10=x;
+}
+ P0          | P1           ;
+ ld x5,0(x6) | ld x5,0(x6)  ;
+ fence rw,rw | xor x7,x5,x5 ;
+ sd x7,0(x8) | ori x7,x7,1  ;
+             | sd x7,0(x8)  ;
+             | sd x9,0(x10) ;
+exists (0:x5=1 /\ 1:x5=1)

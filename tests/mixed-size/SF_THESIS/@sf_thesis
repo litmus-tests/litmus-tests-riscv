@@ -1,0 +1,12 @@
+HAND/LB+data+pod-rfi-pos-data+MIX1.litmus
+HAND/MIX1.litmus
+HAND/MP+fence.rw.rw+ctrl-rfi-si-addr+VAR1.litmus
+HAND/MP+fence.rw.rw+ctrl-rfi-si-addr.litmus
+HAND/MP+fence.rw.rw+ctrl-si-rfi-addr.litmus
+HAND/MP+fence.rw.rw+pos-si1.litmus
+HAND/MP+fence.rw.rw+si.litmus
+HAND/MP+fence.rw.rw+si1.litmus
+HAND/MP+si+fence.rw.rw.litmus
+HAND/MP+si1+fence.rw.rw.litmus
+HAND/MP+sis.litmus
+HAND/WRR+2W+sis.litmus

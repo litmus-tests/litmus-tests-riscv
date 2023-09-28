@@ -1,0 +1,19 @@
+RISCV R+fence.rw.rwss
+"Fence.rw.rwsWW Wse Fence.rw.rwsWR Fre"
+Cycle=Fre Fence.rw.rwsWW Wse Fence.rw.rwsWR
+Relax=
+Safe=Fre Wse Fence.rw.rwsWW Fence.rw.rwsWR
+Generator=diy7 (version 7.55)
+Com=Ws Fr
+Orig=Fence.rw.rwsWW Wse Fence.rw.rwsWR Fre
+{
+uint64_t x; uint64_t 1:x7;
+
+0:x5=1; 0:x6=x; 0:x7=2;
+1:x5=3; 1:x6=x;
+}
+ P0          | P1          ;
+ sd x5,0(x6) | sd x5,0(x6) ;
+ fence rw,rw | fence rw,rw ;
+ sd x7,0(x6) | ld x7,0(x6) ;
+exists (not (x=2 /\ (1:x7=3 \/ 1:x7=2 \/ 1:x7=1) \/ 1:x7=3 /\ x=3))
